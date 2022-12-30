@@ -1,15 +1,27 @@
 package nl.jixxed.eliteodysseymaterials.enums;
 
-public enum HorizonsStorageType {
+public enum HorizonsStorageType implements StorageType {
     RAW,
     ENCODED,
-    MANUFACURED;
+    MANUFACTURED,
+    COMMODITY,
+    OTHER,
+    UNKNOWN;
 
-    public static HorizonsStorageType forMaterial(final Material material) {
-        return HorizonsStorageType.valueOf(material.getClass().getSimpleName().toUpperCase());
+    public static HorizonsStorageType forMaterial(final HorizonsMaterial horizonsMaterial) {
+        return HorizonsStorageType.valueOf(horizonsMaterial.getClass().getSimpleName().toUpperCase());
+    }
+
+    public static HorizonsStorageType forName(final String name) {
+        try {
+            return HorizonsStorageType.valueOf(name.toUpperCase());
+        } catch (final IllegalArgumentException ex) {
+            return HorizonsStorageType.UNKNOWN;
+        }
+
     }
 
     public String getLocalizationKey() {
-        return "storage.type.name." + this.name().toLowerCase();
+        return "storage.type.horizons.name." + this.name().toLowerCase();
     }
 }

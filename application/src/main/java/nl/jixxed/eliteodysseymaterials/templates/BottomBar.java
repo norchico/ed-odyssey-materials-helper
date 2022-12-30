@@ -12,26 +12,39 @@ import javafx.scene.layout.Region;
 import jfxtras.styles.jmetro.JMetroStyleClass;
 import nl.jixxed.eliteodysseymaterials.builder.ComboBoxBuilder;
 import nl.jixxed.eliteodysseymaterials.builder.LabelBuilder;
+import nl.jixxed.eliteodysseymaterials.constants.AppConstants;
 import nl.jixxed.eliteodysseymaterials.constants.OsConstants;
 import nl.jixxed.eliteodysseymaterials.constants.PreferenceConstants;
 import nl.jixxed.eliteodysseymaterials.domain.ApplicationState;
 import nl.jixxed.eliteodysseymaterials.domain.Commander;
 import nl.jixxed.eliteodysseymaterials.enums.FontSize;
+import nl.jixxed.eliteodysseymaterials.enums.GameVersion;
 import nl.jixxed.eliteodysseymaterials.helper.POIHelper;
+import nl.jixxed.eliteodysseymaterials.service.CAPIService;
 import nl.jixxed.eliteodysseymaterials.service.LocaleService;
 import nl.jixxed.eliteodysseymaterials.service.PreferencesService;
 import nl.jixxed.eliteodysseymaterials.service.event.*;
 
 import java.io.File;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 class BottomBar extends HBox {
 
     private static final ApplicationState APPLICATION_STATE = ApplicationState.getInstance();
+    private final List<EventListener<?>> eventListeners = new ArrayList<>();
 
     private String system = "";
     private String body = "";
     private String station = "";
 
+    private Label gameModeLabel;
+    private Label apiLabel;
     private Label watchedFileLabel;
     private Label login;
     private Label commanderLabel;
@@ -40,6 +53,7 @@ class BottomBar extends HBox {
     private ComboBox<Commander> commanderSelect;
     private Double latitude;
     private Double longitude;
+    private Separator apiLabelSeparator;
 
     BottomBar() {
         initComponents();
@@ -52,6 +66,8 @@ class BottomBar extends HBox {
         this.region = new Region();
         HBox.setHgrow(this.region, Priority.ALWAYS);
         this.locationLabel = LabelBuilder.builder().build();
+        this.apiLabel = LabelBuilder.builder().build();
+        this.gameModeLabel = LabelBuilder.builder().build();
         this.commanderLabel = LabelBuilder.builder().withText(LocaleService.getStringBinding("tab.settings.commander")).build();
         this.login = LabelBuilder.builder().withText(LocaleService.getStringBinding("statusbar.login")).build();
         this.commanderSelect = ComboBoxBuilder.builder(Commander.class)
@@ -59,7 +75,7 @@ class BottomBar extends HBox {
                 .withItemsProperty(FXCollections.observableArrayList(APPLICATION_STATE.getCommanders()))
                 .withValueChangeListener((obs, oldValue, newValue) -> Platform.runLater(() -> {
                     if (newValue != null) {
-                        PreferencesService.setPreference(PreferenceConstants.COMMANDER, newValue);
+                        PreferencesService.setPreference(PreferenceConstants.COMMANDER, newValue.getName() + ":" + newValue.getFid() + ":" + newValue.getGameVersion().name());
                     }
                     if (oldValue != null && newValue != null) {
                         EventService.publish(new CommanderSelectedEvent(newValue));
@@ -70,39 +86,63 @@ class BottomBar extends HBox {
 
         final File watchedFolder = new File(PreferencesService.getPreference(PreferenceConstants.JOURNAL_FOLDER, OsConstants.DEFAULT_WATCHED_FOLDER));
         this.watchedFileLabel = LabelBuilder.builder().withText(LocaleService.getStringBinding("statusbar.watching.none", watchedFolder.getAbsolutePath())).build();
-        this.getChildren().addAll(this.watchedFileLabel, new Separator(Orientation.VERTICAL), this.login, this.region, this.locationLabel, new Separator(Orientation.VERTICAL), this.commanderLabel, this.commanderSelect);
+        this.apiLabelSeparator = new Separator(Orientation.VERTICAL);
+        this.apiLabelSeparator.visibleProperty().bind(CAPIService.getInstance().getActive());
+        this.apiLabel.visibleProperty().bind(CAPIService.getInstance().getActive());
+        this.getChildren().addAll(this.watchedFileLabel, new Separator(Orientation.VERTICAL), this.gameModeLabel, this.apiLabelSeparator, this.apiLabel, this.login, this.region, this.locationLabel, new Separator(Orientation.VERTICAL), this.commanderLabel, this.commanderSelect);
     }
 
     private void initEventHandling() {
-        EventService.addListener(this, 0, WatchedFolderChangedEvent.class, this::resetAfterWatchedFolderChanged);
-        EventService.addListener(this, LocationChangedEvent.class, this::updateLocationLabel);
-        EventService.addListener(this, JournalLineProcessedEvent.class, this::updateWatchedFileLabel);
-        EventService.addListener(this, EngineerEvent.class, event -> hideLoginRequest());
-        EventService.addListener(this, CommanderAddedEvent.class, this::handleAddedCommander);
-        EventService.addListener(this, CommanderAllListedEvent.class, event -> afterAllCommandersListed());
-        EventService.addListener(this, 0, CommanderResetEvent.class, event -> this.commanderSelect.getItems().clear());
-        EventService.addListener(this, AfterFontSizeSetEvent.class, fontSizeEvent -> this.commanderSelect.styleProperty().set("-fx-font-size: " + fontSizeEvent.getFontSize() + "px"));
+        this.eventListeners.add(EventService.addListener(this, 0, WatchedFolderChangedEvent.class, this::resetAfterWatchedFolderChanged));
+        this.eventListeners.add(EventService.addListener(this, LocationChangedEvent.class, this::updateLocationLabel));
+        this.eventListeners.add(EventService.addListener(this, JournalLineProcessedEvent.class, this::updateWatchedFileLabel));
+        this.eventListeners.add(EventService.addListener(this, EngineerEvent.class, event -> hideLoginRequest()));
+        this.eventListeners.add(EventService.addListener(this, CommanderAddedEvent.class, this::handleAddedCommander));
+        this.eventListeners.add(EventService.addListener(this, 0, CommanderAllListedEvent.class, event -> afterAllCommandersListed()));
+        this.eventListeners.add(EventService.addListener(this, 0, CommanderResetEvent.class, event -> this.commanderSelect.getItems().clear()));
+        this.eventListeners.add(EventService.addListener(this, AfterFontSizeSetEvent.class, fontSizeEvent -> this.commanderSelect.styleProperty().set("-fx-font-size: " + fontSizeEvent.getFontSize() + "px")));
+        this.eventListeners.add(EventService.addListener(this, LoadGameEvent.class, this::handleLoadGame));
+        this.eventListeners.add(EventService.addListener(this, JournalInitEvent.class, event -> updateApiLabel()));
+        this.eventListeners.add(EventService.addListener(this, CapiFleetCarrierEvent.class, event -> updateApiLabel()));
     }
 
     private void afterAllCommandersListed() {
         if (!this.commanderSelect.getItems().isEmpty() && this.commanderSelect.getSelectionModel().getSelectedIndex() == -1) {
-            this.commanderSelect.getSelectionModel().select(this.commanderSelect.getItems().get(0));
-            PreferencesService.setPreference(PreferenceConstants.COMMANDER, this.commanderSelect.getItems().get(0));
-            EventService.publish(new CommanderSelectedEvent(this.commanderSelect.getItems().get(0)));
+            final Commander commander = this.commanderSelect.getItems().get(0);
+            this.commanderSelect.getSelectionModel().select(commander);
+            PreferencesService.setPreference(PreferenceConstants.COMMANDER, commander.getName() + ":" +commander.getFid() + ":" + commander.getGameVersion().name());
+            EventService.publish(new CommanderSelectedEvent(commander));
         }
     }
 
     private void handleAddedCommander(final CommanderAddedEvent commanderAddedEvent) {
         this.login.setVisible(true);
+        this.login.getStyleClass().remove("statusbar-login-hidden");
         this.commanderSelect.getItems().add(commanderAddedEvent.getCommander());
         final String preferredName = PreferencesService.getPreference(PreferenceConstants.COMMANDER, "");
-        if (preferredName.isBlank() || commanderAddedEvent.getCommander().getName().equals(preferredName)) {
+        if (preferredName.isBlank() || isPreferredCommander(commanderAddedEvent.getCommander(), preferredName)) {
             this.commanderSelect.getSelectionModel().select(commanderAddedEvent.getCommander());
+            EventService.publish(new CommanderSelectedEvent(commanderAddedEvent.getCommander()));
         }
+    }
+
+    private static boolean isPreferredCommander(final Commander addedCommander, final String preferredName) {
+        final String[] commanderFidVersion = preferredName.split(":");
+        final String name = commanderFidVersion[0];
+        final String version = (commanderFidVersion.length > 2) ? commanderFidVersion[2] : "LIVE";
+        final String fid = (commanderFidVersion.length > 2) ? commanderFidVersion[1] : "0";
+        return addedCommander.getName().equals(name) && addedCommander.getFid().equals(fid) && addedCommander.getGameVersion().name().equals(version);
+    }
+
+    private void handleLoadGame(final LoadGameEvent loadGameEvent) {
+        this.gameModeLabel.textProperty().bind(LocaleService.getStringBinding(loadGameEvent.getExpansion().getLocalizationKey()));
     }
 
     private void hideLoginRequest() {
         this.login.setVisible(false);
+        if (!this.login.getStyleClass().contains("statusbar-login-hidden")) {
+            this.login.getStyleClass().add("statusbar-login-hidden");
+        }
     }
 
     private void resetAfterWatchedFolderChanged(final WatchedFolderChangedEvent watchedFolderChangedEvent) {
@@ -111,7 +151,23 @@ class BottomBar extends HBox {
     }
 
     private void updateWatchedFileLabel(final JournalLineProcessedEvent journalLineProcessedEvent) {
-        Platform.runLater(() -> this.watchedFileLabel.textProperty().bind(LocaleService.getStringBinding("statusbar.watching", journalLineProcessedEvent.getFile().getName())));
+        if (journalLineProcessedEvent.getFile().getName().endsWith("log")) {
+            Platform.runLater(() -> this.watchedFileLabel.textProperty().bind(LocaleService.getStringBinding("statusbar.watching", journalLineProcessedEvent.getFile().getName())));
+        }
+    }
+
+    private void updateApiLabel() {
+
+        APPLICATION_STATE.getPreferredCommander().ifPresent(commander -> {
+            final String pathname = OsConstants.CONFIG_DIRECTORY + OsConstants.OS_SLASH + commander.getFid().toLowerCase(Locale.ENGLISH) + (commander.getGameVersion().equals(GameVersion.LEGACY) ? ".legacy" : "");
+            final File fleetCarrierFileDir = new File(pathname);
+            fleetCarrierFileDir.mkdirs();
+            final File fleetCarrierFile = new File(pathname + OsConstants.OS_SLASH + AppConstants.FLEETCARRIER_FILE);
+            if (fleetCarrierFile.exists()) {
+                final ZonedDateTime lastModified = ZonedDateTime.ofInstant(Instant.ofEpochMilli(fleetCarrierFile.lastModified()), ZoneId.systemDefault());
+                this.apiLabel.textProperty().bind(LocaleService.getStringBinding("statusbar.api.last.update", lastModified.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))));
+            }
+        });
     }
 
     private void updateLocationLabel(final LocationChangedEvent locationChangedEvent) {

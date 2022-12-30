@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public interface HorizonsMaterial {
+public interface HorizonsMaterial extends Material {
 
-    default OdysseyStorageType getStorageType() {
-        return OdysseyStorageType.OTHER;
+    default HorizonsStorageType getStorageType() {
+        return HorizonsStorageType.OTHER;
     }
 
     static HorizonsMaterial subtypeForName(final String name) {
@@ -22,7 +22,10 @@ public interface HorizonsMaterial {
             if (material.isUnknown()) {
                 material = Manufactured.forName(name);
                 if (material.isUnknown()) {
-                    throw new IllegalArgumentException("Unknown material type for name: " + name);
+                    material = Commodity.forName(name);
+                    if (material.isUnknown()) {
+                        throw new IllegalArgumentException("Unknown material type for name: " + name);
+                    }
                 }
             }
         }
@@ -51,7 +54,11 @@ public interface HorizonsMaterial {
 
     Rarity getRarity();
 
+    GameVersion getGameVersion();
+
     String name();
 
-
+    default int getMaxAmount() {
+        return this.getRarity().getMaxAmount();
+    }
 }

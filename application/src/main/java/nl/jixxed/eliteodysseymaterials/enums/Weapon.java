@@ -8,11 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Getter
+@SuppressWarnings("java:S1192")
 public enum Weapon implements Equipment {
 
 
     KINEMATIC_P15(
-            new LevelValue(RecipeName.NONE, RecipeName.KARMA_1_2, RecipeName.KARMA_2_3, RecipeName.KARMA_3_4, RecipeName.KARMA_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.KARMA_1_2, OdysseyBlueprintName.KARMA_2_3, OdysseyBlueprintName.KARMA_3_4, OdysseyBlueprintName.KARMA_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.pistol"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.secondary"),
@@ -26,15 +27,19 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 25),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 80.7),
             Map.entry(DynamicStat.STABILITY, 40.6),
-            Map.entry(DynamicStat.HANDLING, 80),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 1.75),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.45),
+            Map.entry(DynamicStat.STOW_SPEED, 0.63),
+            Map.entry(DynamicStat.ADS_SPEED, 0.20)
+
+
     ),
     KINEMATIC_AR50(
-            new LevelValue(RecipeName.NONE, RecipeName.KARMA_1_2, RecipeName.KARMA_2_3, RecipeName.KARMA_3_4, RecipeName.KARMA_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.KARMA_1_2, OdysseyBlueprintName.KARMA_2_3, OdysseyBlueprintName.KARMA_3_4, OdysseyBlueprintName.KARMA_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.rifle"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.primary"),
@@ -48,15 +53,17 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 50),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 75.3),
             Map.entry(DynamicStat.STABILITY, 78.9),
-            Map.entry(DynamicStat.HANDLING, 40),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 2.7),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.50),
+            Map.entry(DynamicStat.STOW_SPEED, 0.50),
+            Map.entry(DynamicStat.ADS_SPEED, 0.50)
     ),
     KINEMATIC_C44(
-            new LevelValue(RecipeName.NONE, RecipeName.KARMA_1_2, RecipeName.KARMA_2_3, RecipeName.KARMA_3_4, RecipeName.KARMA_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.KARMA_1_2, OdysseyBlueprintName.KARMA_2_3, OdysseyBlueprintName.KARMA_3_4, OdysseyBlueprintName.KARMA_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.carbine"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.primary"),
@@ -70,15 +77,17 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 25),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 82.1),
             Map.entry(DynamicStat.STABILITY, 62.4),
-            Map.entry(DynamicStat.HANDLING, 60),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 2.46),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.47),
+            Map.entry(DynamicStat.STOW_SPEED, 0.47),
+            Map.entry(DynamicStat.ADS_SPEED, 0.53)
     ),
     KINEMATIC_L6(
-            new LevelValue(RecipeName.NONE, RecipeName.KARMA_1_2, RecipeName.KARMA_2_3, RecipeName.KARMA_3_4, RecipeName.KARMA_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.KARMA_1_2, OdysseyBlueprintName.KARMA_2_3, OdysseyBlueprintName.KARMA_3_4, OdysseyBlueprintName.KARMA_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.launcher"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.primary"),
@@ -92,15 +101,17 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 300),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 69.9),
             Map.entry(DynamicStat.STABILITY, 51.0),
-            Map.entry(DynamicStat.HANDLING, 20),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 5.78),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.48),
+            Map.entry(DynamicStat.STOW_SPEED, 1.12),
+            Map.entry(DynamicStat.ADS_SPEED, 0.60)
     ),
     TAKADA_APHELION(
-            new LevelValue(RecipeName.NONE, RecipeName.TK_1_2, RecipeName.TK_2_3, RecipeName.TK_3_4, RecipeName.TK_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.TK_1_2, OdysseyBlueprintName.TK_2_3, OdysseyBlueprintName.TK_3_4, OdysseyBlueprintName.TK_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.rifle"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.primary"),
@@ -114,15 +125,17 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 70),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 78.1),
             Map.entry(DynamicStat.STABILITY, 81.9),
-            Map.entry(DynamicStat.HANDLING, 40),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 2.27),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.49),
+            Map.entry(DynamicStat.STOW_SPEED, 0.49),
+            Map.entry(DynamicStat.ADS_SPEED, 0.55)
     ),
     TAKADA_ECLIPSE(
-            new LevelValue(RecipeName.NONE, RecipeName.TK_1_2, RecipeName.TK_2_3, RecipeName.TK_3_4, RecipeName.TK_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.TK_1_2, OdysseyBlueprintName.TK_2_3, OdysseyBlueprintName.TK_3_4, OdysseyBlueprintName.TK_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.carbine"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.primary"),
@@ -136,15 +149,17 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 25),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 78.3),
             Map.entry(DynamicStat.STABILITY, 76.3),
-            Map.entry(DynamicStat.HANDLING, 60),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 2.03),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.47),
+            Map.entry(DynamicStat.STOW_SPEED, 0.47),
+            Map.entry(DynamicStat.ADS_SPEED, 0.42)
     ),
     TAKADA_ZENITH(
-            new LevelValue(RecipeName.NONE, RecipeName.TK_1_2, RecipeName.TK_2_3, RecipeName.TK_3_4, RecipeName.TK_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.TK_1_2, OdysseyBlueprintName.TK_2_3, OdysseyBlueprintName.TK_3_4, OdysseyBlueprintName.TK_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.pistol"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.secondary"),
@@ -158,15 +173,17 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 35),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 74.9),
             Map.entry(DynamicStat.STABILITY, 68.6),
-            Map.entry(DynamicStat.HANDLING, 80),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 1.75),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.45),
+            Map.entry(DynamicStat.STOW_SPEED, 0.65),
+            Map.entry(DynamicStat.ADS_SPEED, 0.28)
     ),
     MANTICORE_EXECUTIONER(
-            new LevelValue(RecipeName.NONE, RecipeName.MANTICORE_1_2, RecipeName.MANTICORE_2_3, RecipeName.MANTICORE_3_4, RecipeName.MANTICORE_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.MANTICORE_1_2, OdysseyBlueprintName.MANTICORE_2_3, OdysseyBlueprintName.MANTICORE_3_4, OdysseyBlueprintName.MANTICORE_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.sniper"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.primary"),
@@ -180,15 +197,17 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 100),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 35.3),
             Map.entry(DynamicStat.STABILITY, 47.4),
-            Map.entry(DynamicStat.HANDLING, 30),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 3.5),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.47),
+            Map.entry(DynamicStat.STOW_SPEED, 0.65),
+            Map.entry(DynamicStat.ADS_SPEED, 0.85)
     ),
     MANTICORE_TORMENTOR(
-            new LevelValue(RecipeName.NONE, RecipeName.MANTICORE_1_2, RecipeName.MANTICORE_2_3, RecipeName.MANTICORE_3_4, RecipeName.MANTICORE_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.MANTICORE_1_2, OdysseyBlueprintName.MANTICORE_2_3, OdysseyBlueprintName.MANTICORE_3_4, OdysseyBlueprintName.MANTICORE_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.pistol"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.secondary"),
@@ -202,15 +221,17 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 15),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 56.8),
             Map.entry(DynamicStat.STABILITY, 18.2),
-            Map.entry(DynamicStat.HANDLING, 70),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 2.5),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.45),
+            Map.entry(DynamicStat.STOW_SPEED, 0.63),
+            Map.entry(DynamicStat.ADS_SPEED, 0.33)
     ),
     MANTICORE_INTIMIDATOR(
-            new LevelValue(RecipeName.NONE, RecipeName.MANTICORE_1_2, RecipeName.MANTICORE_2_3, RecipeName.MANTICORE_3_4, RecipeName.MANTICORE_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.MANTICORE_1_2, OdysseyBlueprintName.MANTICORE_2_3, OdysseyBlueprintName.MANTICORE_3_4, OdysseyBlueprintName.MANTICORE_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.shotgun"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.primary"),
@@ -224,15 +245,17 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 7),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 16.1),
             Map.entry(DynamicStat.STABILITY, 38.8),
-            Map.entry(DynamicStat.HANDLING, 50),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 2.5),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.47),
+            Map.entry(DynamicStat.STOW_SPEED, 0.52),
+            Map.entry(DynamicStat.ADS_SPEED, 0.53)
     ),
     MANTICORE_OPPRESSOR(
-            new LevelValue(RecipeName.NONE, RecipeName.MANTICORE_1_2, RecipeName.MANTICORE_2_3, RecipeName.MANTICORE_3_4, RecipeName.MANTICORE_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.MANTICORE_1_2, OdysseyBlueprintName.MANTICORE_2_3, OdysseyBlueprintName.MANTICORE_3_4, OdysseyBlueprintName.MANTICORE_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.CLASS, "loadout.stat.value.class.rifle"),
             Map.entry(StaticStat.TYPE, "loadout.stat.value.type.primary"),
@@ -246,15 +269,17 @@ public enum Weapon implements Equipment {
             Map.entry(DynamicStat.EFFECTIVE_RANGE, 35),
             Map.entry(DynamicStat.HIP_FIRE_ACCURACY, 75.3),
             Map.entry(DynamicStat.STABILITY, 69.4),
-            Map.entry(DynamicStat.HANDLING, 40),
             Map.entry(DynamicStat.SILENCED_INSIDE, false),
             Map.entry(DynamicStat.SILENCED_OUTSIDE, false),
             Map.entry(DynamicStat.RELOAD_SPEED, 2.46),
             Map.entry(DynamicStat.SCOPE, false),
-            Map.entry(DynamicStat.STOWED_RELOADING, false)
+            Map.entry(DynamicStat.STOWED_RELOADING, false),
+            Map.entry(DynamicStat.DRAW_SPEED, 0.53),
+            Map.entry(DynamicStat.STOW_SPEED, 0.59),
+            Map.entry(DynamicStat.ADS_SPEED, 0.58)
     );
     @Getter
-    private final static Map<Weapon, Double> HIP_FIRE_FACTORS = Map.ofEntries(
+    private static final Map<Weapon, Double> HIP_FIRE_FACTORS = Map.ofEntries(
             Map.entry(Weapon.KINEMATIC_P15, 43.00),
             Map.entry(Weapon.KINEMATIC_C44, 41.25),
             Map.entry(Weapon.KINEMATIC_AR50, 41.25),
@@ -266,6 +291,34 @@ public enum Weapon implements Equipment {
             Map.entry(Weapon.MANTICORE_TORMENTOR, 43.00),
             Map.entry(Weapon.MANTICORE_INTIMIDATOR, 40.75),
             Map.entry(Weapon.MANTICORE_OPPRESSOR, 41.25)
+    );
+    @Getter
+    private static final Map<Weapon, Double> DRAW_STOW_FACTORS = Map.ofEntries(
+            Map.entry(Weapon.KINEMATIC_P15, 30.0),
+            Map.entry(Weapon.KINEMATIC_C44, 35.0),
+            Map.entry(Weapon.KINEMATIC_AR50, 33.0),
+            Map.entry(Weapon.KINEMATIC_L6, 30.0),
+            Map.entry(Weapon.TAKADA_APHELION, 33.0),
+            Map.entry(Weapon.TAKADA_ZENITH, 30.0),
+            Map.entry(Weapon.TAKADA_ECLIPSE, 31.0),
+            Map.entry(Weapon.MANTICORE_EXECUTIONER, 32.0),
+            Map.entry(Weapon.MANTICORE_TORMENTOR, 30.0),
+            Map.entry(Weapon.MANTICORE_INTIMIDATOR, 32.0),
+            Map.entry(Weapon.MANTICORE_OPPRESSOR, 50.0)
+    );
+    @Getter
+    private static final Map<Weapon, Double> ADS_FACTORS = Map.ofEntries(
+            Map.entry(Weapon.KINEMATIC_P15, 45.0),
+            Map.entry(Weapon.KINEMATIC_C44, 40.0),
+            Map.entry(Weapon.KINEMATIC_AR50, 40.0),
+            Map.entry(Weapon.KINEMATIC_L6, 30.0),
+            Map.entry(Weapon.TAKADA_APHELION, 40.0),
+            Map.entry(Weapon.TAKADA_ZENITH, 30.0),
+            Map.entry(Weapon.TAKADA_ECLIPSE, 45.0),
+            Map.entry(Weapon.MANTICORE_EXECUTIONER, 40.0),
+            Map.entry(Weapon.MANTICORE_TORMENTOR, 40.0),
+            Map.entry(Weapon.MANTICORE_INTIMIDATOR, 40.0),
+            Map.entry(Weapon.MANTICORE_OPPRESSOR, 45.0)
     );
 
     public boolean isKinetic() {
@@ -299,4 +352,22 @@ public enum Weapon implements Equipment {
         return "loadout.equipment.name." + this.name().toLowerCase();
     }
 
+    public static Weapon forFdevName(final String name) {
+        return switch (name) {
+            case "wpn_m_sniper_plasma_charged" -> MANTICORE_EXECUTIONER;
+            case "wpn_s_pistol_plasma_charged" -> MANTICORE_TORMENTOR;
+            case "wpn_m_shotgun_plasma_doublebarrel" -> MANTICORE_INTIMIDATOR;
+            case "wpn_m_assaultrifle_plasma_fauto" -> MANTICORE_OPPRESSOR;
+            case "wpn_m_assaultrifle_kinetic_fauto" -> KINEMATIC_AR50;
+            case "wpn_m_submachinegun_kinetic_fauto" -> KINEMATIC_C44;
+            case "wpn_m_launcher_rocket_sauto" -> KINEMATIC_L6;
+            case "wpn_s_pistol_kinetic_sauto" -> KINEMATIC_P15;
+            case "wpn_m_assaultrifle_laser_fauto" -> TAKADA_APHELION;
+            case "wpn_m_submachinegun_laser_fauto" -> TAKADA_ECLIPSE;
+            case "wpn_s_pistol_laser_sauto" -> TAKADA_ZENITH;
+
+            default -> throw new IllegalArgumentException("Unknown Weapon: " + name);
+        };
+    }
 }
+

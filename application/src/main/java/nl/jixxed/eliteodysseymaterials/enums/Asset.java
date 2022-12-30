@@ -4,15 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import nl.jixxed.eliteodysseymaterials.service.LocaleService;
 
+import java.util.Arrays;
+import java.util.Locale;
+
 @AllArgsConstructor
 @Getter
-public enum Asset implements Material {
+public enum Asset implements OdysseyMaterial {
     AEROGEL(AssetType.CHEMICAL, 9, 5),
     CHEMICALCATALYST(AssetType.CHEMICAL, 7, 4),
     CHEMICALSUPERBASE(AssetType.CHEMICAL, 9, 5),
     EPINEPHRINE(AssetType.CHEMICAL, 5, 3),
     EPOXYADHESIVE(AssetType.CHEMICAL, 5, 3),
-    GRAPHENE(AssetType.CHEMICAL, 23, 12),
+    GRAPHENE(AssetType.CHEMICAL, 23, 13),
     OXYGENICBACTERIA(AssetType.CHEMICAL, 5, 3),
     PHNEUTRALISER(AssetType.CHEMICAL, 5, 3),
     RDX(AssetType.CHEMICAL, 7, 4),
@@ -24,7 +27,7 @@ public enum Asset implements Material {
     ELECTROMAGNET(AssetType.CIRCUIT, 9, 5),
     IONBATTERY(AssetType.CIRCUIT, 9, 5),
     METALCOIL(AssetType.CIRCUIT, 9, 5),
-    MICROELECTRODE(AssetType.CIRCUIT, 16, 8),
+    MICROELECTRODE(AssetType.CIRCUIT, 16, 9),
     MICROSUPERCAPACITOR(AssetType.CIRCUIT, 5, 3),
     MICROTRANSFORMER(AssetType.CIRCUIT, 7, 4),
     MOTOR(AssetType.CIRCUIT, 5, 3),
@@ -32,14 +35,14 @@ public enum Asset implements Material {
     CARBONFIBREPLATING(AssetType.TECH, 11, 6),
     ENCRYPTEDMEMORYCHIP(AssetType.TECH, 4, 2),
     MICROHYDRAULICS(AssetType.TECH, 7, 4),
-    MICROTHRUSTERS(AssetType.TECH, 5, 4),
+    MICROTHRUSTERS(AssetType.TECH, 5, 3),
     MEMORYCHIP(AssetType.TECH, 4, 2),
     OPTICALLENS(AssetType.TECH, 9, 5),
     SCRAMBLER(AssetType.TECH, 5, 3),
     TITANIUMPLATING(AssetType.TECH, 11, 6),
     TRANSMITTER(AssetType.TECH, 5, 3),
     TUNGSTENCARBIDE(AssetType.TECH, 11, 6),
-    WEAPONCOMPONENT(AssetType.TECH, 18, 9),
+    WEAPONCOMPONENT(AssetType.TECH, 18, 10),
     UNKNOWN(AssetType.TECH, 0, 0);//add it to tech if it is unknown
 
     private final AssetType type;
@@ -81,4 +84,10 @@ public enum Asset implements Material {
         return LocaleService.getLocalizedStringForCurrentLocale(getLocalizationKey());
     }
 
+    public static Asset forLocalizedName(final String name, final Locale locale) {
+        return Arrays.stream(Asset.values())
+                .filter((Asset asset) -> LocaleService.getLocalizedStringForLocale(locale, asset.getLocalizationKey()).equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(Asset.UNKNOWN);
+    }
 }

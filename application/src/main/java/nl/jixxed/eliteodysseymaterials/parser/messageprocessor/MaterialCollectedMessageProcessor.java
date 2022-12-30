@@ -1,38 +1,46 @@
 package nl.jixxed.eliteodysseymaterials.parser.messageprocessor;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import nl.jixxed.eliteodysseymaterials.enums.Commodity;
 import nl.jixxed.eliteodysseymaterials.enums.HorizonsMaterial;
+import nl.jixxed.eliteodysseymaterials.enums.NotificationType;
 import nl.jixxed.eliteodysseymaterials.enums.StoragePool;
-import nl.jixxed.eliteodysseymaterials.parser.EncodedParser;
-import nl.jixxed.eliteodysseymaterials.parser.ManufacturedParser;
-import nl.jixxed.eliteodysseymaterials.parser.RawParser;
-import nl.jixxed.eliteodysseymaterials.service.StorageService;
+import nl.jixxed.eliteodysseymaterials.schemas.journal.MaterialCollected.MaterialCollected;
+import nl.jixxed.eliteodysseymaterials.service.*;
 import nl.jixxed.eliteodysseymaterials.service.event.EventService;
 import nl.jixxed.eliteodysseymaterials.service.event.StorageEvent;
 
-import java.util.Map;
+public class MaterialCollectedMessageProcessor implements MessageProcessor<MaterialCollected> {
+    @Override
+    public void process(final MaterialCollected event) {
+        try {
+            final HorizonsMaterial horizonsMaterial = HorizonsMaterial.subtypeForName(event.getName());
+            if (!horizonsMaterial.isUnknown()) {
+                if (horizonsMaterial instanceof Commodity commodity) {
+                    StorageService.addCommodity(commodity, StoragePool.SHIP, event.getCount().intValue());
+                } else {
+                    StorageService.addMaterial(horizonsMaterial, event.getCount().intValue());
+                }
+                if (WishlistService.isMaterialOnWishlist(horizonsMaterial)) {
+                    NotificationService.showInformation(NotificationType.WISHLIST_PICKUP, LocaleService.getLocalizedStringForCurrentLocale("notification.collected.wishlist.material.title"),
+                            LocaleService.getLocalizedStringForCurrentLocale("notification.collected.wishlist.material.notification.horizons",
+                                    LocaleService.LocalizationKey.of(horizonsMaterial.getLocalizationKey()),
+                                    event.getCount().intValue(),
+                                    StorageService.getMaterialCount(horizonsMaterial),
+                                    WishlistService.getAllWishlistsCount(horizonsMaterial)));
+                }
 
-public class MaterialCollectedMessageProcessor implements MessageProcessor {
-    private static final RawParser RAW_PARSER = new RawParser();
-    private static final EncodedParser ENCODED_PARSER = new EncodedParser();
-    private static final ManufacturedParser MANUFACTURED_PARSER = new ManufacturedParser();
+                EventService.publish(new StorageEvent(StoragePool.SHIP));
+            }
+        } catch (final IllegalArgumentException e) {
+            final String name = event.getName();
+            final String category = event.getCategory();
+            NotificationService.showWarning(NotificationType.ERROR, "Unknown Material Collected", category + " - " + name + "\nPlease report!");
+            ReportService.reportMaterial(event);
+        }
+    }
 
     @Override
-    public void process(final JsonNode journalMessage) {
-        final String category = journalMessage.get("Category").asText();
-        switch (category) {
-            case "Raw" -> RAW_PARSER.parse(journalMessage, (Map<HorizonsMaterial, Integer>) (Map<?, Integer>) StorageService.getRaw());
-            case "Encoded" -> ENCODED_PARSER.parse(journalMessage, (Map<HorizonsMaterial, Integer>) (Map<?, Integer>) StorageService.getEncoded());
-            case "Manufactured" -> MANUFACTURED_PARSER.parse(journalMessage, (Map<HorizonsMaterial, Integer>) (Map<?, Integer>) StorageService.getManufactured());
-        }
-        EventService.publish(new StorageEvent(StoragePool.SHIP));
+    public Class<MaterialCollected> getMessageClass() {
+        return MaterialCollected.class;
     }
 }
-//{
-//        "timestamp": "2022-02-07T12:09:22Z",
-//        "event": "MaterialCollected",
-//        "Category": "Manufactured",
-//        "Name": "guardian_sentinel_wreckagecomponents",
-//        "Name_Localised": "Guardian Wreckage Components",
-//        "Count": 3
-//        }

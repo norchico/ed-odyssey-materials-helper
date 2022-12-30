@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import nl.jixxed.eliteodysseymaterials.domain.ApplicationState;
 import nl.jixxed.eliteodysseymaterials.domain.StarSystem;
-import nl.jixxed.eliteodysseymaterials.enums.Material;
+import nl.jixxed.eliteodysseymaterials.enums.OdysseyMaterial;
 import nl.jixxed.eliteodysseymaterials.helper.DnsHelper;
 import nl.jixxed.eliteodysseymaterials.service.LocationService;
 import nl.jixxed.eliteodysseymaterials.service.PreferencesService;
+import nl.jixxed.eliteodysseymaterials.service.event.EventListener;
+import nl.jixxed.eliteodysseymaterials.service.event.EventService;
+import nl.jixxed.eliteodysseymaterials.service.event.TerminateApplicationEvent;
 import nl.jixxed.eliteodysseymaterials.trade.message.common.Info;
 import nl.jixxed.eliteodysseymaterials.trade.message.common.Item;
 import nl.jixxed.eliteodysseymaterials.trade.message.common.XMessage;
@@ -26,10 +29,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @Slf4j
 public class MarketPlaceClient {
@@ -41,6 +41,7 @@ public class MarketPlaceClient {
     private final Timer timer;
     private final TimerTask task;
     private static MarketPlaceClient marketPlaceClient;
+    private final List<EventListener<?>> eventListeners = new ArrayList<>();
 
     public static MarketPlaceClient getInstance() {
         try {
@@ -73,6 +74,10 @@ public class MarketPlaceClient {
         };
         this.timer = new Timer("Websocket-keep-alive", true);
         this.timer.scheduleAtFixedRate(this.task, 0, 59L * 1000L);
+        this.eventListeners.add(EventService.addListener(this, TerminateApplicationEvent.class, event -> {
+            close();
+            destroy();
+        }));
     }
 
     public void connect() {
@@ -115,7 +120,7 @@ public class MarketPlaceClient {
         }
     }
 
-    public void publishOffer(final Material offerMaterial, final Integer offerAmount, final Material receiveMaterial, final Integer receiveAmount) {
+    public void publishOffer(final OdysseyMaterial offerOdysseyMaterial, final Integer offerAmount, final OdysseyMaterial receiveOdysseyMaterial, final Integer receiveAmount) {
         final StarSystem starSystem = LocationService.getCurrentStarSystem();
         final OutboundMessage message = OutboundMessage.builder()
                 .action(Action.OFFER.toString().toLowerCase(Locale.ENGLISH))
@@ -130,8 +135,8 @@ public class MarketPlaceClient {
                                         .z(starSystem.getZ())
                                         .build())
                                 .items(List.of(Item.builder()
-                                        .did(receiveMaterial.getLocalizationKey())
-                                        .sid(offerMaterial.getLocalizationKey())
+                                        .did(receiveOdysseyMaterial.getLocalizationKey())
+                                        .sid(offerOdysseyMaterial.getLocalizationKey())
                                         .demand(receiveAmount)
                                         .supply(offerAmount)
                                         .build()))
@@ -265,6 +270,11 @@ public class MarketPlaceClient {
         if (MarketPlaceClient.this.webSocket != null && !MarketPlaceClient.this.webSocket.isInputClosed()) {
             this.webSocket.sendClose(WebSocket.NORMAL_CLOSURE, "finished");
         }
+    }
+
+
+    public void destroy() {
+        this.timer.cancel();
     }
 
 }

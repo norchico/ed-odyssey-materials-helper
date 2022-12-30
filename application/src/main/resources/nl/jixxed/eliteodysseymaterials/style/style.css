@@ -12,6 +12,7 @@
     -fx-fill: #89d07f;
 }
 
+
 .recipe-complete {
     -fx-text-fill: #89d07f;
 }
@@ -43,7 +44,6 @@
     -fx-background-color: #0093ff;
     -fx-text-fill: white;
 }
-
 
 .auto-complete-popup > .list-view > .placeholder > .label {
     -fx-text-fill: #2b2b2b;
@@ -86,10 +86,6 @@
 
 }
 
-.blueprint-title-pane > .title > .arrow-button .arrow, .blueprint-title-pane > .title > .text {
-    -fx-translate-x: 5;
-}
-
 .category-title-pane {
     -fx-font-weight: bold;
 }
@@ -104,6 +100,9 @@
     -fx-pref-height: 2em;
     -fx-min-height: 2em;
     -fx-max-height: 2em;
+    /*-fx-pref-height: 4em;*/
+    /*-fx-min-height: 4em;*/
+    /*-fx-max-height: 4em;*/
     -fx-alignment: center-left;
     -fx-background-color: #0f0f0f;
     -fx-pref-width: 32em;
@@ -111,21 +110,43 @@
     -fx-max-width: 32em;
 }
 
+/*.material:hover {*/
+/*    -fx-pref-height: 4em;*/
+/*    -fx-min-height: 4em;*/
+/*    -fx-max-height: 4em;*/
+/*}*/
+
+/*.material:hover .material-quantity-line {*/
+/*    -fx-pref-height: 2em;*/
+/*    -fx-min-height: 2em;*/
+/*    -fx-max-height: 2em;*/
+/*}*/
+
+/*.material-quantity-line {*/
+/*    -fx-pref-height: 0em;*/
+/*    -fx-min-height: 0em;*/
+/*    -fx-max-height: 0em;*/
+/*}*/
+
+.material-name-line {
+    -fx-alignment: center-left;
+}
+
 .material:hover {
     -fx-cursor: hand;
     -fx-background-color: #4f4f4f;
 }
 
-.material > .label {
+.material .label {
     -fx-text-fill: #2e92df;
 }
 
-.material-relevant > .label {
+.material-relevant .label {
     -fx-font-weight: bold;
     -fx-text-fill: white;
 }
 
-.material-irrelevant > .label {
+.material-irrelevant .label {
     -fx-font-weight: normal;
     -fx-text-fill: #2e92df;
 }
@@ -134,8 +155,8 @@
     -fx-background-color: #ba5efa;
 }
 
-.material-favourite > .materialcard-name {
-    -fx-font-style: italic;
+.material-favourite .materialcard-name {
+    /*-fx-font-style: italic;*/
 }
 
 
@@ -151,9 +172,9 @@
 }
 
 
-.materialcard-amount {
-    -fx-padding: 5;
-    -fx-text-alignment: right;
+.material:hover {
+    -fx-cursor: hand;
+    -fx-background-color: #1f1f1f;
 }
 
 .materialcard-image {
@@ -167,31 +188,82 @@
     -fx-fit-to-width: true;
 }
 
+.materialcard-amount {
+    visibility: hidden;
+    -fx-padding: 0;
+    -fx-text-alignment: left;
+    /*-fx-min-width 3em;*/
+    -fx-min-width: 0em;
+    -fx-max-width: 0em;
+
+}
+
+.materialcard-amount-nonzero {
+    visibility: visible;
+    -fx-min-width: 3em;
+    -fx-max-width: 3em;
+    -fx-padding: 5;
+}
+
+.materialcard-amount-image {
+    visibility: hidden;
+    -fx-min-width: 0em;
+    -fx-max-width: 0em;
+}
+
+.materialcard-amount-image-nonzero {
+    visibility: visible;
+    -fx-min-width: 2em;
+    -fx-max-width: 2em;
+}
+
+.material:hover .materialcard-amount-image {
+    visibility: visible;
+    -fx-min-width: 2em;
+    -fx-max-width: 2em;
+}
+
+.material:hover .materialcard-amount {
+    visibility: visible;
+    -fx-min-width: 3em;
+    -fx-max-width: 3em;
+    -fx-padding: 5;
+}
+
+.materialcard-total {
+    -fx-padding: 5;
+    -fx-text-alignment: right;
+    -fx-min-width: 3em;
+    -fx-max-width: 3em;
+
+}
+
+
 .wishlist-content {
     -fx-spacing: 10;
     -fx-padding: 5;
 }
 
 .wishlist-recipes {
-    -fx-hgap: 10;
-    -fx-vgap: 10;
+    -fx-hgap: 0.75em;
+    -fx-vgap: 0.75em;
 }
 
 .wishlist-ingredients {
-    -fx-hgap: 4;
-    -fx-vgap: 4;
+    -fx-hgap: 0.25em;
+    -fx-vgap: 0.25em;
 }
 
 .wishlist-blueprints {
-    -fx-spacing: 4;
+    -fx-spacing: 0.25em;
 }
 
 .ingredient {
     -fx-border-color: #0f0f0f;
     -fx-alignment: center-left;
     -fx-min-height: 2.5em;
-    -fx-max-width: 242px;
-    -fx-min-width: 242px;
+    -fx-max-width: 17.4em;
+    -fx-min-width: 17.4em;
     -fx-background-color: #0f0f0f;
 }
 
@@ -248,10 +320,14 @@
     -fx-text-fill: #ff7c7c;
 }
 
+.ingredient-filled-partial .label {
+    -fx-text-fill: #dcc030;
+}
+
 .ingredient-without-amount {
     -fx-background-color: #0f0f0f;
-    -fx-max-width: 490px;
-    -fx-min-width: 490px;
+    -fx-max-width: 35.15em;
+    -fx-min-width: 35.15em;
 }
 
 .ingredient-name {
@@ -302,8 +378,8 @@
 }
 
 .engineer-grid {
-    -fx-hgap: 10;
-    -fx-vgap: 10;
+    -fx-hgap: 0.25em;
+    -fx-vgap: 0.25em;
     -fx-padding: 5;
 }
 
@@ -314,9 +390,9 @@
 
     -fx-border-width: 1;
     -fx-border-color: #2e2e2e;
-    -fx-max-height: 2em;
-    -fx-min-height: 2em;
-    -fx-pref-height: 2em;
+    -fx-max-height: 28px;
+    -fx-min-height: 28px;
+    -fx-pref-height: 28px;
 }
 
 .search:focused, .search:selected {
@@ -328,9 +404,9 @@
     -fx-spacing: 10;
 }
 
-.material-overview .flow-pane {
-    -fx-hgap: 4;
-    -fx-vgap: 4;
+.material-overview-flow-pane {
+    -fx-hgap: 0.25em;
+    -fx-vgap: 0.25em;
 }
 
 .donate-label {
@@ -380,33 +456,59 @@
 }
 
 .engineer-label {
+    -fx-background-color: #0f0f0f;
     -fx-border-color: black;
     -fx-border-width: 1;
     -fx-padding: 5;
     -fx-text-fill: black;
+    -fx-spacing: 5;
 }
 
-.recipe-titled-pane-content {
+.engineer-label-pinnable {
+    -fx-cursor: hand;
+}
+
+.engineer-label-pinnable:hover {
+    -fx-background-color: #2e2e2e;
+}
+
+.engineer-label-pinnable:hover .label {
+    -fx-background-color: #2e2e2e;
+}
+
+.engineer-label-big .label {
+    -fx-min-height: 2em;
+}
+
+.blueprint-titled-pane-content {
     -fx-fill-width: true;
     -fx-padding: 0;
 }
 
-.recipes-list {
-    -fx-min-width: 500;
-    -fx-pref-width: 500;
-    -fx-max-width: 500;
+.blueprint-list {
+    -fx-min-width: 36em;
+    -fx-pref-width: 36em;
+    -fx-max-width: 36em;
 }
 
 .recipe-engineer-flow {
-    -fx-hgap: 10;
-    -fx-vgap: 10;
-    -fx-max-width: 500;
+    -fx-hgap: 0.25em;
+    -fx-vgap: 0.25em;
+    -fx-min-width: 35.5em;
+    -fx-pref-width: 35.5em;
+    -fx-max-width: 35.5em;
 }
 
 .engineer-unlocked {
 
     -fx-background-color: #0f0f0f;
     -fx-text-fill: #89d07f;
+}
+
+.engineer-lowgrade {
+
+    -fx-background-color: #0f0f0f;
+    -fx-text-fill: #dcc030;
 }
 
 .engineer-locked {
@@ -573,13 +675,15 @@
     -fx-text-fill: white;
 }
 
-.wishlist-item > .label {
+.wishlist-item > .wishlist-label {
     -fx-label-padding: 5;
     -fx-text-fill: white;
     -fx-cursor: hand;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
 }
 
-.wishlist-item-close {
+.wishlist-item-button {
     -fx-background-color: #4f4f4f;
     -fx-background-insets: 0 0 0 0;
     -fx-border-color: black;
@@ -590,19 +694,20 @@
     -fx-max-width: 2em;
     -fx-min-width: 2em;
     -fx-padding: 2;
+    -fx-focus-traversable: false;
 }
 
-.wishlist-item-close:hover {
+.wishlist-item-button:hover {
     -fx-background-color: #fff;
     -fx-text-fill: black;
 }
 
-.wishlist-item-close:armed,
-.wishlist-item-close:pressed,
-.wishlist-item-close:selected,
-.wishlist-item-close:visited,
-.wishlist-item-close:selected:focused,
-.wishlist-item-close:focused {
+.wishlist-item-button:armed,
+.wishlist-item-button:pressed,
+.wishlist-item-button:selected,
+.wishlist-item-button:visited,
+.wishlist-item-button:selected:focused,
+.wishlist-item-button:focused {
     -fx-background-color: black;
     -fx-background-insets: 0 0 0 0;
     -fx-border-color: black;
@@ -611,11 +716,11 @@
     -fx-cursor: hand;
 }
 
-.wishlist-item-close:focused {
+.wishlist-item-button:focused {
     -fx-background-color: #2e92df;
 }
 
-.wishlist-item-close:pressed {
+.wishlist-item-button:pressed {
     -fx-background-color: black;
 }
 
@@ -629,6 +734,11 @@
     -fx-text-fill: rgba(0, 0, 0, .05) !important;
 }
 
+.wishlist-lowlight.ingredient-filled-partial {
+    -fx-background-color: rgba(15, 15, 15, .05);
+    -fx-text-fill: rgba(0, 0, 0, .05) !important;
+}
+
 .wishlist-lowlight.ingredient-filled .label {
     -fx-text-fill: rgba(0, 0, 0, .5) !important;
 }
@@ -637,11 +747,20 @@
     -fx-text-fill: rgba(0, 0, 0, .5) !important;
 }
 
+.wishlist-lowlight.ingredient-filled-partial .label {
+    -fx-text-fill: rgba(0, 0, 0, .5) !important;
+}
 
-.wishlist-item.wishlist-highlight .label {
+
+.wishlist-item.wishlist-highlight .wishlist-label {
     -fx-background-color: #4f4f4f;
     -fx-text-fill: #2e92df;
 }
+
+/*.wishlist-item.wishlist-highlight {*/
+/*    -fx-background-color: #4f4f4f;*/
+/*    -fx-text-fill: #2e92df;*/
+/*}*/
 
 .recipe-wishlist-count {
     -fx-background-radius: 15;
@@ -688,12 +807,23 @@
     -fx-text-alignment: center;
 }
 
+.settings-link {
+    -fx-label-padding: 2.5;
+    -fx-min-height: 20;
+    -fx-min-width: 300px;
+    -fx-text-alignment: center;
+}
+
 .settings-journal-line {
     -fx-alignment: center-left;
 }
 
 .settings-spacing-10 {
-    -fx-spacing: 10;
+    -fx-spacing: 0.75em;
+}
+
+.settings-vbox {
+    -fx-padding: 0 0.75em 0.75em 0.75em;
 }
 
 .settings-dropdown {
@@ -768,6 +898,8 @@
 }
 
 .ingredient-image {
+    -fx-min-width: 2em;
+    -fx-min-height: 2em;
     -fx-max-width: 2em;
     -fx-max-height: 2em;
     -fx-fit-to-height: true;
@@ -792,7 +924,7 @@
 .engineer-prerequisite {
     -fx-text-fill: #0078d6;
     -fx-label-padding: 0 5px 0 2px;
-    -fx-max-width: 19.7em;
+    -fx-max-width: 19.6em;
     -fx-wrap-text: true;
 }
 
@@ -804,7 +936,7 @@
 .engineer-blueprint {
     -fx-text-fill: #0078d6;
     -fx-label-padding: 0 5px 0 2px;
-    -fx-max-width: 19.7em;
+    -fx-max-width: 19.6em;
     -fx-wrap-text: true;
 }
 
@@ -863,29 +995,48 @@
     -fx-fit-to-width: true;
 }
 
+.grade-bar-image {
+    /*-fx-max-width: 2.2em;*/
+    -fx-min-height: 2.2em;
+    -fx-pref-height: 2.2em;
+    -fx-max-height: 2.2em;
+    -fx-fit-to-height: true;
+    /*-fx-fit-to-width: true;*/
+}
+
 .specialisation-line {
     -fx-padding: 0 0 0 5;
 }
 
 .recipe-content {
-    -fx-padding: 5px;
+    -fx-padding: 0.33em;
     -fx-max-height: 9999;
+    -fx-min-width: 35.8em;
+    -fx-pref-width: 35.8em;
+    -fx-max-width: 35.8em;
 }
 
 .recipe-ingredient-flow {
-    -fx-hgap: 4;
-    -fx-vgap: 4;
+    -fx-hgap: 0.25em;
+    -fx-vgap: 0.25em;
+    -fx-min-width: 35.8em;
+    -fx-pref-width: 35.8em;
+    -fx-max-width: 35.8em;
 }
 
 .recipe-modifier-flow {
-    -fx-hgap: 4;
-    -fx-vgap: 4;
+    -fx-hgap: 0.25em;
+    -fx-vgap: 0.25em;
 
 }
 
-.recipe-description {
-    -fx-translate-x: 15px;
+.blueprint-description-text {
     -fx-font-weight: normal;
+    -fx-max-width: 35.5em;
+}
+
+.blueprint-description {
+    -fx-padding: 0 0 0 1em;
 }
 
 .recipe-modifier {
@@ -909,17 +1060,65 @@
     -fx-max-width: 1000;
 }
 
+.recipe-synthesis-togglebutton {
+    -fx-min-width: 12em;
+    -fx-max-height: 2em;
+}
+
+.recipe-synthesis-togglebutton .blueprint-grade-image {
+    -fx-min-height: 2em;
+    -fx-pref-height: 2em;
+    -fx-max-height: 2em;
+    -fx-min-width: 2em;
+    -fx-pref-width: 2em;
+    -fx-max-width: 2em;
+    -fx-preserve-ratio: true;
+}
+
+.recipe-grade-togglebutton {
+    -fx-min-width: 7.2em;
+    -fx-max-height: 2em;
+}
+
+.recipe-grade-togglebutton .blueprint-grade-image {
+    -fx-min-height: 2em;
+    -fx-pref-height: 2em;
+    -fx-max-height: 2em;
+    -fx-min-width: 2em;
+    -fx-pref-width: 2em;
+    -fx-max-width: 2em;
+    -fx-preserve-ratio: true;
+}
+
+.engineer-grade-image {
+    -fx-min-height: 2em;
+    -fx-pref-height: 2em;
+    -fx-max-height: 2em;
+    /*-fx-min-width: 2em;*/
+    /*-fx-pref-width: 2em;*/
+    /*-fx-max-width: 2em;*/
+}
+
+.recipe-modifier-positive {
+    -fx-text-fill: #2e92df;
+}
+
+.recipe-modifier-negative {
+    -fx-text-fill: #ff7c7c;
+}
+
 .recipe-title-label {
     -fx-font-size: 1.1em;
     -fx-min-height: 3em;
+    -fx-max-width: 35.5em;
     -fx-label-padding: 5px;
     -fx-font-weight: bold;
 }
 
-.recipe {
-    -fx-min-width: 500px;
-    -fx-pref-width: 500px;
-    -fx-max-width: 500px;
+.blueprint-bar {
+    -fx-min-width: 36em;
+    -fx-pref-width: 36em;
+    -fx-max-width: 36em;
 }
 
 .material-total {
@@ -966,6 +1165,7 @@
 }
 
 .wishlist-label {
+    -fx-label-padding: 5;
     -fx-max-height: 2em;
     -fx-pref-height: 2em;
     -fx-min-height: 2em;
@@ -1053,19 +1253,19 @@
     -fx-padding: 5px;
 }
 
-.wishlist-item > .label.wishlist-craftable {
+.wishlist-item .label.wishlist-craftable {
     -fx-text-fill: #89d07f;
 }
 
-.wishlist-item > .label.wishlist-craftable:hover {
+.wishlist-item .label.wishlist-craftable:hover {
     -fx-text-fill: #2e92df;
 }
 
-.wishlist-item > .label.wishlist-craftable-with-trade {
+.wishlist-item .label.wishlist-craftable-with-trade {
     -fx-text-fill: #dcc030;
 }
 
-.wishlist-item > .label.wishlist-craftable-with-trade:hover {
+.wishlist-item .label.wishlist-craftable-with-trade:hover {
     -fx-text-fill: #2e92df;
 }
 
@@ -1355,6 +1555,34 @@
     -fx-padding: 4px;
 }
 
+.urlscheme-dialog {
+    -fx-background-color: #0f0f0f;
+}
+
+.urlscheme-dialog-text {
+    -fx-font-size: 1.2em;
+    -fx-padding: 4px;
+    -fx-wrap-text: true;
+}
+
+.eddn-dialog-text {
+    -fx-font-size: 1.2em;
+    -fx-padding: 4px;
+    -fx-wrap-text: true;
+}
+.version-dialog-text {
+    -fx-font-size: 1.2em;
+    -fx-padding: 4px;
+    -fx-wrap-text: true;
+}
+
+.version-dialog-download-link {
+    -fx-font-size: 1.2em;
+    -fx-padding: 4px;
+    -fx-wrap-text: true;
+}
+
+
 .loadout-box {
     -fx-padding: 5px;
 }
@@ -1363,19 +1591,13 @@
     -fx-background-color: #0f0f0f;
     -fx-padding: 1em;
     -fx-max-width: 31em;
-    /*-fx-min-width: 31em;*/
-    /*-fx-pref-width: 31em;*/
 }
 
 .loadout-item-image {
     -fx-max-width: 29.5em;
     -fx-min-width: 29.5em;
     -fx-pref-width: 29.5em;
-}
-
-loadout-item-image-container {
-    -fx-min-height: 25em;
-    -fx-alignment: center;
+    -fx-max-height: 21.1em;
 }
 
 .loadout-item-title {
@@ -1394,11 +1616,11 @@ loadout-item-image-container {
 .loadout-modification-image {
     -fx-max-width: 6.66em;
     -fx-max-height: 5.583em;
-    -fx-cursor: hand;
     -fx-opacity: 0.8;
 }
 
-.loadout-modification-image:hover {
+.loadout-modification-image-hover:hover {
+    -fx-cursor: hand;
     -fx-opacity: 1;
 }
 
@@ -1664,19 +1886,32 @@ loadout-item-image-container {
     -fx-max-height: 4em;
     -fx-alignment: center-left;
     -fx-background-color: #0f0f0f;
-    -fx-pref-width: 16em;
-    -fx-min-width: 16em;
-    -fx-max-width: 16em;
+    -fx-pref-width: 16.5em;
+    -fx-min-width: 16.5em;
+    -fx-max-width: 16.5em;
+}
+
+.horizons-materialcard-live {
+    -fx-background-color: linear-gradient(from 0px 0px to 10px 10px, repeat, #0f0f0f 0%, #1f1f1f 25%, #0f0f0f 50%, #1f1f1f 75%);
+    /*-fx-border-color: #0f0f0f;*/
+    /*-fx-border-width: 1;*/
 }
 
 .horizons-materialcard-thargoid {
     -fx-background-color: #3b1b00;
-
 }
-
+.horizons-materialcard-thargoid-live {
+    -fx-background-color: linear-gradient(from 0px 0px to 10px 10px, repeat, #3b1b00 0%, #5b2d00 25%, #3b1b00 50%, #5b2d00 75%);
+    /*-fx-border-color: #0f0f0f;*/
+    /*-fx-border-width: 1;*/
+}
 .horizons-materialcard-guardian {
     -fx-background-color: #270136;
-
+}
+.horizons-materialcard-guardian-live {
+    -fx-background-color: linear-gradient(from 0px 0px to 10px 10px, repeat, #270136 0%, #450362 25%, #270136 50%, #450362 75%);
+    /*-fx-border-color: #0f0f0f;*/
+    /*-fx-border-width: 1;*/
 }
 
 .horizons-materialcard-image {
@@ -1704,6 +1939,12 @@ loadout-item-image-container {
     -fx-max-width: 14em;
 }
 
+.horizons-materialcard-name-highlight {
+    -fx-text-fill: #dcc030 !important;
+    -fx-font-weight: bold;
+
+}
+
 .horizons-materialcard-amount {
     -fx-font-weight: bold;
     -fx-text-fill: #0f0f0f;
@@ -1726,32 +1967,580 @@ loadout-item-image-container {
 }
 
 .horizons-materialcard .segmented-bar {
-    -fx-pref-width: 16em;
-    -fx-min-width: 16em;
-    -fx-max-width: 16em;
+    -fx-pref-width: 16.5em;
+    -fx-min-width: 16.5em;
+    -fx-max-width: 16.5em;
     -fx-pref-height: 1em;
     -fx-min-height: 1em;
     -fx-max-height: 1em;
 
 }
 
-.horizons-materialcard .segmented-bar:horizontal > .only-segment {
+.segmented-bar:horizontal > .only-segment {
     -fx-background-radius: 0;
     -fx-border-radius: 0;
 }
 
-.horizons-materialcard .segmented-bar:horizontal > .first-segment {
+.segmented-bar:horizontal > .first-segment {
     -fx-background-insets: 0 0 0 0;
     -fx-background-radius: 0 0 0 0;
 }
 
-.horizons-materialcard .segmented-bar:horizontal > .middle-segment {
+.segmented-bar:horizontal > .middle-segment {
     -fx-background-insets: 0 0 0 0;
     -fx-background-radius: 0;
     -fx-border-radius: 0;
 }
 
-.horizons-materialcard .segmented-bar:horizontal > .last-segment {
+.segmented-bar:horizontal > .last-segment {
     -fx-background-radius: 0 0 0 0;
     -fx-border-radius: 0 0 0 0;
+}
+
+.engineer-card .segmented-bar {
+    -fx-pref-width: 17.5em;
+    -fx-min-width: 17.5em;
+    -fx-max-width: 17.5em;
+    -fx-pref-height: 1em;
+    -fx-min-height: 1em;
+    -fx-max-height: 1em;
+
+}
+
+.popover-menubutton-layout {
+    -fx-background-color: transparent !important;
+
+}
+
+.popover-menubutton-layout > .border {
+    -fx-stroke: #fff !important;
+    -fx-stroke-width: 0.5 !important;
+    -fx-fill: #fff !important;
+}
+
+.popover-menubutton-box {
+    -fx-border-color: #fff;
+    -fx-background-color: #0f0f0f;
+    -fx-border-radius: 5px;
+    -fx-border-width: 3px;
+    -fx-border-style: solid;
+    -fx-padding: 0.3em;
+}
+
+.shortest-path-flow {
+    -fx-hgap: 0.25em;
+    -fx-vgap: 0.25em;
+}
+
+.shortest-path-item {
+    -fx-background-color: #0f0f0f;
+    -fx-padding: 0.3em;
+}
+
+.shortest-path-item-label {
+    -fx-font-size: 1em;
+    -fx-font-weight: bold;
+    -fx-padding: 0em 0em 0em 0.5em;
+}
+
+.shortest-path-item-label-value {
+    -fx-padding: 0em 0.5em 0em 0.5em;
+    -fx-text-fill: #2e92df;
+
+}
+
+.shortest-path-item-label-big {
+    -fx-font-size: 2em;
+    -fx-padding: 0em 0.1em 0em 0em;
+}
+
+.shortest-path-item-label-blueprint:hover {
+    -fx-text-fill: #2e92df;
+    -fx-cursor: hand;
+    -fx-underline: true;
+}
+
+.shortest-path-item-button {
+    -fx-hgap: 0.25em;
+    -fx-spacing: 0.25em;
+}
+
+.shortest-path-item-spacer {
+    -fx-min-height: 1em;
+}
+
+.settingsblock {
+    -fx-background-color: #0f0f0f;
+    -fx-padding: 0 0 1em 0;
+}
+
+.recipe-wishlist-quickswitch {
+    -fx-min-width: 35em;
+    -fx-pref-width: 35em;
+    -fx-max-width: 35em;
+}
+
+.recipe-wishlist-quickswitch-spacer {
+    -fx-min-height: 0.3em;
+    -fx-pref-height: 0.3em;
+    -fx-max-height: 0.3em;
+}
+
+.wishlist-rolls-select > .button {
+    -fx-min-height: 2em;
+    -fx-pref-height: 2em;
+    -fx-max-height: 2em;
+    -fx-padding: 0.1em;
+    -fx-min-width: 1.2em;
+    -fx-focus-traversable: false;
+}
+
+.wishlist-rolls-select > .text-field {
+    -fx-min-width: 2.5em;
+    -fx-pref-width: 2.5em;
+    -fx-max-width: 2.5em;
+    -fx-min-height: 2em;
+    -fx-pref-height: 2em;
+    -fx-max-height: 2em;
+    -fx-focus-traversable: false;
+}
+
+.wishlist-rolls-label {
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+
+.grade-selects {
+    -fx-spacing: 0.2em;
+}
+
+.grade-selects-title {
+    -fx-font-size: 1.3em;
+}
+
+.wishlist-hint-box {
+    -fx-min-width: 3em;
+}
+
+
+.wishlist-hint-white {
+    -fx-text-fill: #fff;
+    -fx-font-style: italic;
+}
+
+.wishlist-hint-yellow {
+    -fx-text-fill: #dcc030;
+    -fx-font-style: italic;
+}
+
+.wishlist-hint-red {
+    -fx-text-fill: #ff7c7c;
+    -fx-font-style: italic;
+}
+
+.wishlist-hint-green {
+    -fx-text-fill: #89d07f;
+    -fx-font-style: italic;
+}
+
+.wishlist-tooltip {
+    -fx-wrap-text: true;
+}
+
+.hidden-menu-button > .arrow-button,
+.hidden-menu-button > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
+
+.statusbar-login-hidden {
+    -fx-max-width: 0;
+}
+
+.setting-textfield-wide {
+    -fx-min-width: 50em;
+}
+
+.horizons-commoditycard {
+    -fx-padding: 0.2em, 0.2em, 0.2em, 0.2em;
+    -fx-background-color: #0f0f0f;
+    /*-fx-pref-height: 5.4em;*/
+    /*-fx-min-height: 5.4em;*/
+    /*-fx-max-height: 5em;*/
+    -fx-alignment: center-left;
+    -fx-background-color: #0f0f0f;
+    -fx-pref-width: 17.9em;
+    -fx-min-width: 17.9em;
+    -fx-max-width: 17.9em;
+}
+
+.horizons-commoditycard-live {
+    -fx-background-color: linear-gradient(from 0px 0px to 10px 10px, repeat, #0f0f0f 0%, #1f1f1f 25%, #0f0f0f 50%, #1f1f1f 75%);
+    -fx-border-color: #0f0f0f;
+    -fx-border-width: 1;
+}
+
+.horizons-commoditycard-firstline {
+    /*-fx-pref-height: 4em;*/
+}
+
+.horizons-commoditycard-image {
+    -fx-pref-height: 2.5em;
+    -fx-min-height: 2.5em;
+    -fx-max-height: 2.5em;
+    -fx-pref-width: 2.5em;
+    -fx-min-width: 2.5em;
+    -fx-max-width: 2.5em;
+    -fx-alignment: center-left;
+
+}
+
+.fleetcarrier-amount {
+    -fx-pref-width: 6.5em;
+    -fx-padding: 0, 0, 0, 1em;
+    -fx-min-height: 2em;
+    -fx-alignment: center-left;
+    -fx-text-alignment: left;
+}
+
+.ship-amount {
+    -fx-pref-width: 6.5em;
+    -fx-padding: 0, 1em, 0, 0;
+    -fx-min-height: 2em;
+    -fx-alignment: center-right;
+    -fx-text-alignment: right;
+}
+
+.horizons-commoditycard-name {
+    /*-fx-spacing: 0, 0, 0, 1em;*/
+    -fx-min-width: 1em;
+    -fx-pref-width: 14em;
+    -fx-max-width: 14em;
+    -fx-padding: 0.5em, 0, 0, 0;
+    /*-fx-pref-height: 2.5em;*/
+    -fx-alignment: center-left;
+    /*-fx-text-alignment: left;*/
+    -fx-wrap-text: true;
+}
+
+.blueprint-listing-flowpane {
+    -fx-spacing: 0.5em;
+}
+
+.blueprint-listing-label {
+    -fx-background-color: #4f4f4f;
+    -fx-border-color: #000000;
+    -fx-border-width: 1px;
+    -fx-label-padding: 0.2em;
+
+}
+
+.blueprint-listing-label-experimental {
+    -fx-background-color: #2e92df;
+    /*-fx-text-fill: #2e92df !important;*/
+
+}
+
+.loadout-wishlist-create-new {
+    -fx-font-style: italic;
+}
+
+.bartender-material {
+    -fx-border-color: black;
+    -fx-pref-height: 4em;
+    -fx-min-height: 4em;
+    -fx-max-height: 4em;
+    -fx-alignment: center-left;
+    -fx-background-color: #0f0f0f;
+    -fx-pref-width: 50em;
+    -fx-min-width: 50em;
+    -fx-max-width: 50em;
+    -fx-padding: 0 0.2em 0 0;
+}
+
+.bartender-material-line {
+    -fx-pref-height: 2em;
+    -fx-min-height: 2em;
+    -fx-max-height: 2em;
+    -fx-alignment: center-left;
+}
+
+.bartender-material-line-image {
+    -fx-pref-height: 2em;
+    -fx-min-height: 2em;
+    -fx-max-height: 2em;
+    -fx-alignment: top-left;
+}
+
+.bartender-material:hover {
+
+    -fx-background-color: #252525;
+}
+
+.bartender-material-hover:hover {
+
+    /*-fx-background-color: #252525;*/
+    -fx-cursor: hand;
+}
+
+
+.bartender-material-amount-selected {
+
+    -fx-font-weight: bold;
+}
+
+.bartender-material-amount-selected-value {
+
+    -fx-label-padding: 0 1em 0 0;
+    -fx-font-weight: bold;
+}
+
+.bartender-material-value {
+    /*-fx-alignment: center-right;*/
+    /*-fx-text-alignment: right;*/
+    -fx-label-padding: 0 0 0 1em;
+    -fx-pref-width: 7em;
+    -fx-min-width: 7em;
+    -fx-max-width: 7em;
+    -fx-font-style: italic;
+}
+
+.bartender-material-value:disabled {
+    -fx-text-fill: #4f4f4f;
+}
+
+.bartender-material-name {
+    /*-fx-pref-width: 30em;*/
+    /*-fx-min-width: 30em;*/
+    /*-fx-max-width: 30em;*/
+    -fx-label-padding: 0 0 0 1em;
+    -fx-font-weight: bold;
+}
+
+.bartender-material-wishlist {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-pref-width: 3em;
+    -fx-min-width: 3em;
+    -fx-max-width: 3em;
+}
+
+.bartender-material-button {
+    -fx-border-color: #0f0f0f;
+    -fx-background-color: #252525;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-pref-width: 2em;
+    -fx-min-width: 2em;
+    -fx-max-width: 2em;
+}
+
+.bartender-material-button:hover {
+
+    -fx-background-color: #252525;
+    -fx-cursor: hand;
+}
+
+.bartender-material-amount {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-pref-width: 3em;
+    -fx-min-width: 3em;
+    -fx-max-width: 3em;
+}
+
+.bartender-flow {
+    /*-fx-spacing: 0.1em;*/
+    /*-fx-padding: 0, 0, 0.2em, 0;*/
+    -fx-vgap: 0.2em;
+    -fx-pref-width: 50em;
+    -fx-min-width: 50em;
+    -fx-max-width: 50em;
+}
+
+.bartender-top {
+    -fx-padding: 0, 0, 2em, 0;
+}
+
+.bartender-bottom {
+    -fx-spacing: 0.2em;
+    -fx-vgap: 0.2em;
+}
+
+.bartender-left {
+    -fx-padding: 0, 0, 0.2em, 0;
+    /*-fx-vgap: 0.2em;*/
+    -fx-vgap: 0.5em;
+    -fx-spacing: 1em;
+}
+
+.bartender-layout {
+    -fx-padding: 0.4em;
+    -fx-spacing: 0.75em;
+    /*-fx-hgap: 0.75em;*/
+}
+
+.bartender-header {
+    -fx-font-size: 1.35em;
+    -fx-min-height: 2em;
+    -fx-font-weight: bold;
+}
+
+.bartender-total {
+    /*-fx-border-color: black;*/
+    /*-fx-background-color: #0f0f0f;*/
+}
+
+.bartender-total-line {
+    -fx-background-color: #0f0f0f;
+    -fx-font-size: 1.3em;
+    -fx-pref-width: 26.4em;
+    -fx-min-width: 26.4em;
+    -fx-max-width: 26.4em;
+}
+
+.bartender-total-header {
+    /*-fx-pref-width: 20em;*/
+    /*-fx-min-width: 20em;*/
+    /*-fx-max-width: 20em;*/
+    -fx-label-padding: 0.5em;
+}
+
+.bartender-recipes {
+    /*-fx-border-color: black;*/
+    /*-fx-background-color: #0f0f0f;*/
+}
+
+.bartender-recipes-line {
+    -fx-background-color: #0f0f0f;
+    -fx-font-size: 1em;
+    -fx-pref-width: 34.32em;
+    -fx-min-width: 34.32em;
+    -fx-max-width: 34.32em;
+    -fx-label-padding: 0.2em 0 1em 1em;
+}
+
+.bartender-recipes-header {
+    -fx-background-color: #0f0f0f;
+    -fx-pref-width: 28.6em;
+    -fx-min-width: 28.6em;
+    -fx-max-width: 28.6em;
+    -fx-font-size: 1.2em;
+    -fx-label-padding: 0.5em;
+}
+
+.bartender-total-value {
+    -fx-alignment: center-right;
+    -fx-text-alignment: right;
+    -fx-pref-width: 5em;
+    -fx-min-width: 5em;
+    -fx-max-width: 5em;
+    -fx-label-padding: 0.5em;
+}
+
+.help-image {
+    -fx-pref-width: 2em;
+    -fx-cursor: hand;
+}
+
+.help-image-bar {
+    -fx-spacing: 1em;
+}
+
+.help-popover {
+    -fx-background-color: #0f0f0f;
+    -fx-padding: 5px;
+}
+
+.wishlist-search-highlight {
+    -fx-border-color: yellow !important;
+}
+
+.green {
+    -fx-text-fill: #89d07f;
+}
+
+.red {
+    -fx-text-fill: #ff7c7c;
+}
+
+.bartender-header-title-box {
+    -fx-spacing: 1em;
+}
+
+.nearest-trader-flow {
+    -fx-hgap: 0.25em;
+    -fx-vgap: 0.25em;
+}
+
+.nearest-trader {
+    -fx-background-color: #0f0f0f;
+}
+
+.nearest-trader-title {
+    -fx-text-fill: white;
+    -fx-label-padding: 5px;
+    -fx-font-size: 1.2em;
+}
+
+.nearest-trader-location {
+    -fx-text-fill: #0078d6;
+    -fx-label-padding: 5px;
+}
+
+.nearest-trader-location-line {
+    -fx-max-width: 21em;
+}
+
+.nearest-trader-location-line:hover {
+    -fx-cursor: hand;
+}
+
+.nearest-trader-copy-icon {
+    -fx-max-width: 1em;
+    -fx-max-height: 1em;
+    -fx-fit-to-height: true;
+    -fx-fit-to-width: true;
+}
+
+.nearest-trader-distance {
+    -fx-text-fill: #777;
+    -fx-label-padding: 5px;
+}
+
+.material-trader-range-setting > .button {
+    -fx-min-height: 2em;
+    -fx-pref-height: 2em;
+    -fx-max-height: 2em;
+    -fx-padding: 0.1em;
+    -fx-min-width: 1.2em;
+    -fx-focus-traversable: false;
+}
+
+.material-trader-range-setting > .text-field {
+    -fx-min-width: 8em;
+    -fx-pref-width: 8em;
+    -fx-max-width: 8em;
+    -fx-min-height: 2em;
+    -fx-pref-height: 2em;
+    -fx-max-height: 2em;
+    -fx-focus-traversable: false;
+}
+.recipe-live{
+    -fx-font-weight: normal;
+    -fx-label-padding: 0 0 1em 1em;
+    -fx-max-width: 35.5em;
+    -fx-underline: true;
+
+}
+.leveling {
+    -fx-background-color: #0f0f0f;
+    -fx-max-width: 35.15em;
+    -fx-min-width: 35.15em;
+}
+
+.leveling-name {
+    -fx-text-fill: white !important;
+    -fx-label-padding: 5;
+    -fx-wrap-text: true;
+    -fx-font-weight: bold;
 }

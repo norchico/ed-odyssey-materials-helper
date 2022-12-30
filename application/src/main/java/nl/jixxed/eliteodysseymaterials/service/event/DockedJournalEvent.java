@@ -1,15 +1,12 @@
 package nl.jixxed.eliteodysseymaterials.service.event;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import nl.jixxed.eliteodysseymaterials.schemas.journal.Docked.Docked;
 
 @Getter
+@RequiredArgsConstructor
 public class DockedJournalEvent extends JournalEvent {
-    private final String starSystem;
-    private final String stationName;
+    private final Docked docked;
 
-    public DockedJournalEvent(final String timeStamp, final String starSystem, final String stationName) {
-        super(timeStamp);
-        this.starSystem = starSystem;
-        this.stationName = stationName;
-    }
 }

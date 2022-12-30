@@ -17,23 +17,33 @@ public class PreferenceConstants {
     public static final String JOURNAL_FOLDER = "journal.folder";
     public static final String COMMANDER = "commander";
     public static final String ORIENTATION = "orientation";
-    public static final String LOADOUTS_PREFIX = "loadouts.";
-    public static final String WISHLISTS_PREFIX = "wishlists.";
-    public static final String WISHLIST_RECIPES_PREFIX = "wishlist.recipes.";
-    public static final String WISHLIST_RECIPES = "wishlist.recipes";
     public static final String RECIPES_VISIBLE = "recipes.visible";
+    public static final String HORIZONS_RECIPES_VISIBLE = "horizons.recipes.visible";
     public static final String SOLO_MODE = "solo.mode";
     public static final String TRACKING_OPT_OUT = "tracking.opt.out";
     public static final String NOTIFICATION_SOUND = "notification.sound.enabled";
+    public static final String NOTIFICATION_PREFIX = "notification.enabled.";
     public static final String NOTIFICATION_SOUND_CUSTOM_FILE = "settings.notification.sounds.file";
+    public static final String NOTIFICATION_SOUND_CUSTOM_FILE_PREFIX = "settings.notification.sounds.file.";
     public static final String IRRELEVANT_OVERRIDE = "settings.material.irrelevant.override";
     public static final String NOTIFICATION_VOLUME = "settings.notification.sounds.volume";
     public static final String POLICY_ACCEPT_VERSION = "privacy.policy.version";
     public static final String WHATS_NEW_VERSION = "whats.new.version";
+    public static final String URL_SCHEME = "url.scheme.asked";
     public static final String WIP = "wip.visible";
-
-
+    public static final String WISHLIST_GRADE_ROLLS_PREFIX = "wishlist.grade.rolls.";
+    public static final String ENABLE_AR = "ar.enabled";
+    public static final String AR_IRRELEVANT_COLOR = "ar.irrelevant.color";
+    public static final String AR_BLUEPRINT_COLOR = "ar.blueprint.color";
+    public static final String AR_WISHLIST_COLOR = "ar.wishlist.color";
+    public static final String AR_BARTENDER_COLOR = "ar.bartender.color";
+    public static final String AR_LOCALE = "ar.locale";
+    public static final String AR_CHAR_WHITELIST = "ar.character.whitelist";
+    public static final String POLLING_FILE_MODE = "polling.file.mode";
+    public static final String HORIZONS_MATERIAL_TRADER_MAX_RANGE = "horizons.material.trader.max.range";
     public static final String MARKETPLACE_TOKEN_PREFIX = "marketplace.token.";
-
-
+    public static final String ENABLE_BARTENDER_AR =  "ar.bartender.enabled";
+    public static final String USER_LATEST_EVENT = "latest.event";
+    public static final String EDDN_ENABLED = "eddn.enabled";
+    public static final String EDDN_ASKED = "eddn.asked";
 }

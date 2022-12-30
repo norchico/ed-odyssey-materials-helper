@@ -7,9 +7,11 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.jixxed.eliteodysseymaterials.constants.OsConstants;
-import nl.jixxed.eliteodysseymaterials.helper.FileHelper;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -36,12 +38,6 @@ public class PreferencesService {
                 if (!created) {
                     throw new IllegalStateException("Couldn't create pref file: " + targetFile);
                 }
-                if (OsConstants.OLD_PREFERENCES != null) {
-                    final File oldTargetFile = new File(OsConstants.OLD_PREFERENCES);
-                    if (oldTargetFile.exists()) {
-                        FileHelper.copyFileContents(oldTargetFile, targetFile);
-                    }
-                }
             } catch (final IOException e) {
                 throw new IllegalStateException("Couldn't create pref file: " + targetFile);
             }
@@ -58,8 +54,9 @@ public class PreferencesService {
                 .debounce(1000, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
                 .subscribe(newValue -> {
-                    try (final OutputStream output = new FileOutputStream(OsConstants.PREFERENCES)) {
+                    try (final OutputStream output = new FileOutputStream(OsConstants.PREFERENCES_TEMP)) {
                         prop.store(output, null);
+                        Files.copy(Path.of(OsConstants.PREFERENCES_TEMP), Path.of(OsConstants.PREFERENCES), StandardCopyOption.REPLACE_EXISTING);
                     } catch (final IOException e) {
                         log.error("Error writing preferences", e);
                     }
@@ -73,7 +70,6 @@ public class PreferencesService {
         }
 
     }
-
 
     public static <T> void setPreference(final String key, final List<T> value, final Function<T, String> mapper) {
         if (value == null || value.isEmpty()) {
@@ -115,4 +111,7 @@ public class PreferencesService {
     }
 
 
+    public static void removePreference(final String key) {
+        prop.remove(key);
+    }
 }

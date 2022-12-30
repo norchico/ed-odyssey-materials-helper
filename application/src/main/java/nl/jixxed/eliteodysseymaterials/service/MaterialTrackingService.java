@@ -9,10 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import nl.jixxed.eliteodysseymaterials.constants.OsConstants;
 import nl.jixxed.eliteodysseymaterials.constants.PreferenceConstants;
 import nl.jixxed.eliteodysseymaterials.domain.ApplicationState;
+import nl.jixxed.eliteodysseymaterials.domain.Commander;
 import nl.jixxed.eliteodysseymaterials.domain.MaterialStatistic;
+import nl.jixxed.eliteodysseymaterials.domain.Terminal;
 import nl.jixxed.eliteodysseymaterials.enums.*;
 import nl.jixxed.eliteodysseymaterials.helper.DnsHelper;
+import nl.jixxed.eliteodysseymaterials.service.event.EventListener;
 import nl.jixxed.eliteodysseymaterials.service.event.*;
+import nl.jixxed.eliteodysseymaterials.service.message.DataTrackingItem;
+import nl.jixxed.eliteodysseymaterials.service.message.DataTrackingMessage;
 import nl.jixxed.eliteodysseymaterials.service.message.MaterialTrackingItem;
 import nl.jixxed.eliteodysseymaterials.service.message.MaterialTrackingMessage;
 
@@ -27,14 +32,10 @@ import java.net.http.HttpResponse;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -46,33 +47,36 @@ public class MaterialTrackingService {
     private static final ApplicationState APPLICATION_STATE = ApplicationState.getInstance();
     static final List<BackpackChangeEvent> BACKPACK_CHANGE_EVENTS = new ArrayList<>();
     private static boolean isEnabled = false;
-    private static final List<EventListener<?>> eventListeners = new ArrayList<>();
-    private static final Map<Material, MaterialStatistic> MATERIAL_STATISTICS = new ConcurrentHashMap<>();
+    private static final List<EventListener<?>> EVENT_LISTENERS = new ArrayList<>();
+    private static final Map<OdysseyMaterial, MaterialStatistic> MATERIAL_STATISTICS = new ConcurrentHashMap<>();
+    private static final Map<String, Terminal> TERMINAL_DATAS = new ConcurrentHashMap<>();
+    private static Thread thread;
 
     static {
-        Material.getAllMaterials().forEach(material -> {
-            MATERIAL_STATISTICS.put(material, new MaterialStatistic());
-        });
+        OdysseyMaterial.getAllMaterials().forEach(material ->
+                MATERIAL_STATISTICS.put(material, new MaterialStatistic())
+        );
     }
 
     public static synchronized void initialize() {
         log.debug("Initialize MaterialTrackingService");
         close();
         BACKPACK_CHANGE_EVENTS.clear();
-        eventListeners.add(EventService.addStaticListener(BackpackChangeEvent.class, MaterialTrackingService::processEvent));
-        eventListeners.add(EventService.addStaticListener(SupercruiseEntryJournalEvent.class, superCruiseEntryJournalEvent -> publish()));//send on SC entry
-        eventListeners.add(EventService.addStaticListener(LocationJournalEvent.class, locationJournalEvent -> publish()));//send on relog or respawn
-        eventListeners.add(EventService.addStaticListener(CommanderSelectedEvent.class, commanderSelectedEvent -> publish()));
-        eventListeners.add(EventService.addStaticListener(ShipLockerEvent.class, shipLockerEvent -> clearChanges(shipLockerEvent.getTimestamp())));
-        eventListeners.add(EventService.addStaticListener(JournalInitEvent.class, journalInitEvent -> isEnabled = journalInitEvent.isInitialised()));
-
+        EVENT_LISTENERS.add(EventService.addStaticListener(BackpackChangeEvent.class, MaterialTrackingService::processEvent));
+        EVENT_LISTENERS.add(EventService.addStaticListener(SupercruiseEntryJournalEvent.class, superCruiseEntryJournalEvent -> publish()));//send on SC entry
+        EVENT_LISTENERS.add(EventService.addStaticListener(LocationJournalEvent.class, locationJournalEvent -> publish()));//send on relog or respawn
+        EVENT_LISTENERS.add(EventService.addStaticListener(CommanderSelectedEvent.class, commanderSelectedEvent -> publish()));
+        EVENT_LISTENERS.add(EventService.addStaticListener(ShipLockerEvent.class, shipLockerEvent -> clearChanges(shipLockerEvent.getTimestamp())));
+        EVENT_LISTENERS.add(EventService.addStaticListener(JournalInitEvent.class, journalInitEvent -> isEnabled = journalInitEvent.isInitialised()));
+        EVENT_LISTENERS.add(EventService.addStaticListener(TerminateApplicationEvent.class, event -> {
+            close();
+        }));
         //check if statistics file exists
-        new Thread(() -> {
+        thread = new Thread(() -> {
             log.info("Start load material statistics");
             final File statisticsFile = new File(OsConstants.STATISTICS);
             try {
-                if (!statisticsFile.exists() || ZonedDateTime.now().minus(1, ChronoUnit.DAYS).isAfter(ZonedDateTime.ofInstant(Instant.ofEpochMilli(statisticsFile.lastModified()), ZoneId.systemDefault()))) {
-
+                if (!statisticsFile.exists() || modifiedBeforeMonday(statisticsFile)) {
                     log.info("Start download of material statistics");
                     final URL url = new URL("https://material-tracking-report.s3.eu-west-1.amazonaws.com/material-report.json");
                     try (final ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream()); final FileOutputStream fileOutputStream = new FileOutputStream(statisticsFile)) {
@@ -82,28 +86,47 @@ public class MaterialTrackingService {
                 log.info("Load material statistics from file");
                 //map file to MATERIAL_STATISTICS
                 final JsonNode jsonNode = OBJECT_MAPPER.readTree(Files.readString(statisticsFile.toPath()));
-                for (final Material material : MATERIAL_STATISTICS.keySet()) {
-                    final JsonNode materialStat = jsonNode.get(material.name());
-                    MATERIAL_STATISTICS.put(material, OBJECT_MAPPER.readValue(materialStat.toString(), MaterialStatistic.class));
+                for (final OdysseyMaterial odysseyMaterial : MATERIAL_STATISTICS.keySet()) {
+                    final JsonNode materialStat = jsonNode.get(odysseyMaterial.name());
+                    MATERIAL_STATISTICS.put(odysseyMaterial, OBJECT_MAPPER.readValue(materialStat.toString(), MaterialStatistic.class));
                 }
                 log.info("Load material statistics finished");
             } catch (final IOException ex) {
                 log.error("Load material statistics failed", ex);
-                Platform.runLater(() -> {
-                    NotificationService.showError("Error", "Failed to download material statistics.");
-                });
+                log.info("Deleted file due to suspected corruption: " + statisticsFile.delete());
+                Platform.runLater(() ->
+                        NotificationService.showError(NotificationType.ERROR, "Error", "Failed to download material statistics.")
+                );
             }
-        }, "Material Statistics Loader Thread").start();
+        }, "Material Statistics Loader Thread");
+        thread.start();
     }
 
-    static MaterialStatistic getMaterialStatistic(final Material material) {
-        return MATERIAL_STATISTICS.get(material);
+    static void registerData(final String dataPortName, final DataPortType dataPortType, final Data data, final Integer id) {
+        final Terminal terminal = TERMINAL_DATAS.getOrDefault(dataPortName, new Terminal());
+        terminal.setType(dataPortType);
+        terminal.getDatas().put(id, data);
+        TERMINAL_DATAS.put(dataPortName, terminal);
+    }
+
+    static boolean modifiedBeforeMonday(final File statisticsFile) {
+        final ZonedDateTime date = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
+        final DayOfWeek todayAsDayOfWeek = date.getDayOfWeek();
+        final ZonedDateTime previousMonday = todayAsDayOfWeek == DayOfWeek.MONDAY ? date : date.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+        return previousMonday.isAfter(ZonedDateTime.ofInstant(Instant.ofEpochMilli(statisticsFile.lastModified()), ZoneId.systemDefault()));
+    }
+
+    static MaterialStatistic getMaterialStatistic(final OdysseyMaterial odysseyMaterial) {
+        return MATERIAL_STATISTICS.get(odysseyMaterial);
     }
 
     public static synchronized void close() {
         log.debug("Close MaterialTrackingService");
-        eventListeners.forEach(EventService::removeListener);
+        EVENT_LISTENERS.forEach(EventService::removeListener);
         publish();
+        if (thread != null) {
+            thread.interrupt();
+        }
     }
 
     private static synchronized void clearChanges(final String timestamp) {
@@ -121,7 +144,7 @@ public class MaterialTrackingService {
     }
 
     private static synchronized void processEvent(final BackpackChangeEvent backpackChangeEvent) {
-        if (isEnabled && GameMode.SOLO.equals(APPLICATION_STATE.getGameMode()) && (backpackChangeEvent.getMaterial() instanceof Data || backpackChangeEvent.getMaterial() instanceof Good || backpackChangeEvent.getMaterial() instanceof Asset)) {
+        if (isEnabled && GameMode.SOLO.equals(APPLICATION_STATE.getGameMode()) && (backpackChangeEvent.getOdysseyMaterial() instanceof Data || backpackChangeEvent.getOdysseyMaterial() instanceof Good || backpackChangeEvent.getOdysseyMaterial() instanceof Asset)) {
             log.debug("Process backpackchange event: " + backpackChangeEvent.getTimestamp());
             BACKPACK_CHANGE_EVENTS.add(backpackChangeEvent);
         }
@@ -131,17 +154,20 @@ public class MaterialTrackingService {
         if (!BACKPACK_CHANGE_EVENTS.isEmpty()) {
             log.debug("Publish to material tracking server");
             publishMaterialTracking(new ArrayList<>(BACKPACK_CHANGE_EVENTS));
+            publishDataTracking(new HashMap<>(TERMINAL_DATAS));
             BACKPACK_CHANGE_EVENTS.clear();
+            TERMINAL_DATAS.clear();
         }
         resetSession();
     }
 
+    @SuppressWarnings("java:S5411")
     private static synchronized void publishMaterialTracking(final List<BackpackChangeEvent> backpackChangeEvents) {
         if (isEnabled && GameMode.SOLO.equals(APPLICATION_STATE.getGameMode()) && !PreferencesService.getPreference(PreferenceConstants.TRACKING_OPT_OUT, Boolean.FALSE)) {
             final String appVersion = PreferencesService.getPreference(PreferenceConstants.APP_SETTINGS_VERSION, "");
             final ArrayList<MaterialTrackingItem> items = backpackChangeEvents.stream()
                     .map(backpackChangeEvent -> MaterialTrackingItem.builder()
-                            .material(backpackChangeEvent.getMaterial())
+                            .odysseyMaterial(backpackChangeEvent.getOdysseyMaterial())
                             .amount(Operation.ADDED.equals(backpackChangeEvent.getOperation()) ? backpackChangeEvent.getAmount() : -backpackChangeEvent.getAmount())
                             .timestamp(backpackChangeEvent.getTimestamp())
                             .commander(backpackChangeEvent.getCommander())
@@ -175,8 +201,50 @@ public class MaterialTrackingService {
                             .build();
                     final HttpResponse<String> send = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
                     log.info(send.body());
+                } catch (final InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 } catch (final Exception e) {
                     log.error("publish material tracking error", e);
+                }
+            };
+            new Thread(run).start();
+        }
+    }
+
+    private static synchronized void publishDataTracking(final Map<String, Terminal> datas) {
+        if (isEnabled && !PreferencesService.getPreference(PreferenceConstants.TRACKING_OPT_OUT, Boolean.FALSE)) {
+            final String appVersion = PreferencesService.getPreference(PreferenceConstants.APP_SETTINGS_VERSION, "");
+            final String timestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").format(ZonedDateTime.now().toLocalDateTime().atOffset(ZoneOffset.UTC));
+            final ArrayList<DataTrackingItem> items = datas.entrySet().stream()
+                    .flatMap(entry -> entry.getValue().getDatas().values().stream()
+                            .collect(Collectors.groupingBy(data -> data, Collectors.counting()))
+                            .entrySet().stream().map(dataAmount -> DataTrackingItem.builder()
+                                    .data(dataAmount.getKey())
+                                    .amount(Math.toIntExact(dataAmount.getValue()))
+                                    .dataPortName(entry.getKey())
+                                    .type(entry.getValue().getType())
+                                    .timestamp(timestamp)//2022-10-02T08:50:16Z
+                                    .commander(APPLICATION_STATE.getPreferredCommander().map(Commander::getName).orElse("UNKNOWN"))
+                                    .session(session.toString())
+                                    .version(appVersion)
+                                    .build()))
+                    .collect(Collectors.toCollection(ArrayList::new));
+            final Runnable run = () -> {
+                try {
+                    final String datax = OBJECT_MAPPER.writeValueAsString(new DataTrackingMessage(items));
+                    log.info(datax);
+                    final HttpClient httpClient = HttpClient.newHttpClient();
+                    final String domainName = DnsHelper.resolveCname("edmattracking.jixxed.nl");
+                    final HttpRequest request = HttpRequest.newBuilder()
+                            .uri(URI.create("https://" + domainName + "/Prod/submit-data"))
+                            .POST(HttpRequest.BodyPublishers.ofString(datax))
+                            .build();
+                    final HttpResponse<String> send = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                    log.info(send.body());
+                } catch (final InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                } catch (final Exception e) {
+                    log.error("publish data tracking error", e);
                 }
             };
             new Thread(run).start();

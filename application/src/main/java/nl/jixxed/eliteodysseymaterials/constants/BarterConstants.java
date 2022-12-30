@@ -5,49 +5,13 @@ import lombok.NoArgsConstructor;
 import nl.jixxed.eliteodysseymaterials.enums.Asset;
 import nl.jixxed.eliteodysseymaterials.enums.Data;
 import nl.jixxed.eliteodysseymaterials.enums.Good;
-import nl.jixxed.eliteodysseymaterials.enums.Material;
+import nl.jixxed.eliteodysseymaterials.enums.OdysseyMaterial;
 
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BarterConstants {
-
-    private static final Map<Asset, String> BARTER_TRADEVALUES = Map.ofEntries(
-            Map.entry(Asset.AEROGEL, "9/5"),
-            Map.entry(Asset.CHEMICALCATALYST, "7/4"),
-            Map.entry(Asset.CHEMICALSUPERBASE, "9/5"),
-            Map.entry(Asset.EPINEPHRINE, "5/3"),
-            Map.entry(Asset.EPOXYADHESIVE, "5/3"),
-            Map.entry(Asset.GRAPHENE, "23/13"),
-            Map.entry(Asset.OXYGENICBACTERIA, "5/3"),
-            Map.entry(Asset.PHNEUTRALISER, "5/3"),
-            Map.entry(Asset.RDX, "7/4"),
-            Map.entry(Asset.VISCOELASTICPOLYMER, "11/6"),
-            Map.entry(Asset.CIRCUITBOARD, "9/5"),
-            Map.entry(Asset.CIRCUITSWITCH, "4/2"),
-            Map.entry(Asset.ELECTRICALFUSE, "5/3"),
-            Map.entry(Asset.ELECTRICALWIRING, "9/5"),
-            Map.entry(Asset.ELECTROMAGNET, "9/5"),
-            Map.entry(Asset.IONBATTERY, "9/5"),
-            Map.entry(Asset.METALCOIL, "9/5"),
-            Map.entry(Asset.MICROELECTRODE, "16/9"),
-            Map.entry(Asset.MICROSUPERCAPACITOR, "5/3"),
-            Map.entry(Asset.MICROTRANSFORMER, "7/4"),
-            Map.entry(Asset.MOTOR, "5/3"),
-            Map.entry(Asset.OPTICALFIBRE, "11/6"),
-            Map.entry(Asset.CARBONFIBREPLATING, "11/6"),
-            Map.entry(Asset.ENCRYPTEDMEMORYCHIP, "4/2"),
-            Map.entry(Asset.MICROHYDRAULICS, "4/2"),
-            Map.entry(Asset.MICROTHRUSTERS, "7/4"),
-            Map.entry(Asset.MEMORYCHIP, "5/3"),
-            Map.entry(Asset.OPTICALLENS, "9/5"),
-            Map.entry(Asset.SCRAMBLER, "5/3"),
-            Map.entry(Asset.TITANIUMPLATING, "11/6"),
-            Map.entry(Asset.TRANSMITTER, "5/3"),
-            Map.entry(Asset.TUNGSTENCARBIDE, "11/6"),
-            Map.entry(Asset.WEAPONCOMPONENT, "18/10")
-    );
-    private static final Map<Material, Integer> BARTER_SELLVALUES = Map.ofEntries(
+    private static final Map<OdysseyMaterial, Integer> BARTER_SELLVALUES = Map.ofEntries(
             Map.entry(Asset.AEROGEL, 500),
             Map.entry(Asset.CHEMICALCATALYST, 400),
             Map.entry(Asset.CHEMICALSUPERBASE, 500),
@@ -72,9 +36,9 @@ public class BarterConstants {
             Map.entry(Asset.OPTICALFIBRE, 600),
             Map.entry(Asset.CARBONFIBREPLATING, 600),
             Map.entry(Asset.ENCRYPTEDMEMORYCHIP, 200),
-            Map.entry(Asset.MICROHYDRAULICS, 200),
-            Map.entry(Asset.MICROTHRUSTERS, 400),
-            Map.entry(Asset.MEMORYCHIP, 300),
+            Map.entry(Asset.MICROHYDRAULICS, 400),
+            Map.entry(Asset.MICROTHRUSTERS, 300),
+            Map.entry(Asset.MEMORYCHIP, 200),
             Map.entry(Asset.OPTICALLENS, 500),
             Map.entry(Asset.SCRAMBLER, 300),
             Map.entry(Asset.TITANIUMPLATING, 600),
@@ -241,14 +205,8 @@ public class BarterConstants {
             Map.entry(Data.WEAPONTESTDATA, 15_000),
             Map.entry(Data.XENODEFENCEPROTOCOLS, 25_000));
 
-    public static String getBarterValues(final Material material) {
-        if (material instanceof Asset) {
-            return BARTER_TRADEVALUES.get(material);
-        }
-        return "";
-    }
 
-    public static Integer getBarterSellPrice(final Material material) {
-        return BARTER_SELLVALUES.getOrDefault(material, -1);
+    public static Integer getBarterSellPrice(final OdysseyMaterial odysseyMaterial) {
+        return BARTER_SELLVALUES.getOrDefault(odysseyMaterial, -1);
     }
 }

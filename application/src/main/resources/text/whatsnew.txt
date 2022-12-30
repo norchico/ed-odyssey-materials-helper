@@ -1,8 +1,357 @@
+Version 2.9
+-------------
+Fix issue with handling edomh:// deeplink url's
+
+Version 2.8
+-------------
+Fix for Extra Ammo Capacity being cross-applied to other suits in loadouts
+Add some known powerplay commodities
+Add new version notification for portable releases
+Add horizons engineer reputation gain tips
+
+Version 2.7
+-------------
+Fix for backpack/shiplocker/ship cargo jumping/sticking to 0
+
+Version 2.6
+-------------
+Fix for EDDN messages with empty list properties
+Handle reading more files that can potentially be corrupted gracefully
+
+Version 2.5
+-------------
+Add EDDN integration (enable/disable through Settings)
+Set new max values for caustic crystal/shards
+Add a fix for disappearing engineer pins
+Handle corrupted status.json file gracefully (caused by game crashes)
+Add Guardian/Thargoid to material names in English for easier search
+
+Version 2.4
+-------------
+Add new Sirius techbroker blueprints (Heatsink Launcher, AX Missile Racks)
+Fix missing numbers for quantities on horizons material cards with small text size configured
+Fix unocuppiedescapepod commodity (misspelled in journals)
+
+Version 2.3
+-------------
+Added notifications for unknown materials/commodities
+Added automated reporting of unknown materials/commodities
+Added newly discovered material
+Updated LIVE item styling/labeling
+
+Version 2.2
+-------------
+Add caustic sinks synthesis blueprint
+Add new commodities and materials for U14 that have been identified so far
+Enable Legacy CAPI Services
+
+Version 2.1
+-------------
+Fix: Consider SOLO mode for AR/pickup notifications/exports
+LIVE/LEGACY mode now only reads the appropriate journals
+
+Version 2.0
+-------------
+New mayor version - breaking compatibility with older versions!!!
+ - Recent versions should migrate settings without issues
+Pinned blueprints were not yet commander specific. Now they are, but you will need to set them again.
+- If you need access to the old pinned blueprints:
+  %localappdata%\odyssey-materials-helper\pref.properties -> keys starting with "blueprint.pinned."
+  Or run v1.102 portable version and write them down
+Further separation of LIVE/LEGACY accounts.
+Storage of wishlists, loadouts, material favourites and pinned blueprints moved into commander specific folders/files.
+Removed some legacy V1 code
+Fixed bug when setting custom color for bartender, causing overlay to stop working
+Fixed bug for missing lockfile preventing application launch
+
+Version 1.102
+-------------
+Actually fixed edomh url registration check.
+
+Version 1.101
+-------------
+Added bartender trading overlay with fleetcarrier and wishlist information
+- Feature is still beta, so it can be disabled in settings if it causes issues
+- Added color setting for overlay text color
+Added LIVE/LEGACY tagging in preparation for U14 account split
+- Only Live accounts will have functional CAPI(Frontier API) access
+List experimental blueprints in blue in horizons material tooltips
+Show remaining amount on hover for horizons wishlist materials
+Fixed CPU usage bug for unused filepollers (CPU was running at a couple percent usage when idle)
+Removed Lori Jameson from life support - reinforced - G5
+Fixed edomh url registration check. Would falsy report Unregistered while Registered and vice versa.
+Fixed horizons material pickup overflow when you maxed out storage when picking up more than the available capacity.
+
+Version 1.100
+-------------
+Add data spawnrates to tooltips
+Add pinned blueprints in horizons engineers overview
+Add nearest traders to Horizons materials overview
+Remove the cancelled pre-engineered heatsink launcher
+
+Version 1.99
+-------------
+Data tracking improvements
+Check changes made to url handling registration to reflect actual state
+Reduce size of horizons materials tooltips by placing blueprints inside collapsible panels
+Add horizons material spawn locations
+Fix wishlist shortest path 2nd entry distance with remote workshop
+Some fixes to fastload for engineer and material events
+
+Version 1.98
+-------------
+Bartender improvements
+- More information (storage/wishlist)
+- Show used in recipes
+- Redesigned component
+
+Version 1.97
+-------------
+Add detection of POI dataports
+Properly handle bad detections
+
+Version 1.96
+-------------
+Improved data port name detection
+
+Version 1.95
+-------------
+Added searchbars to wishlists with options for grouping and sorting
+Added searchbars to engineers for searching on name, location, specialization or blueprints
+Added pre-engineered Heatsink Launcher V1 blueprint
+Added wishlist export formats CSV and XLS
+Consider fleetcarrier materials as needed in export
+Added full inventory export to Settings (CSV and XLS)
+Show remaining indicator also to yellow wishlist ingredients on mouse hover
+Added tracking of dataports to figure out data spawn locations and droprates per port type
+
+Version 1.94
+-------------
+Optimization to copy to clipboard functionality for horizons wishlist to reduce url size
+Show remaining indicator to red wishlist ingredients on mouse hover
+Added tips to unlocking Odyssey Engineers
+
+Version 1.93
+-------------
+Shortest path
+- Pair experimental with modules when possible
+- Make remote workshop always appear first in the list
+- Sorting blueprint by type(module, experimental), then name
+Handle SendText journal entries for wing style point to emote
+
+Version 1.92
+-------------
+Added link to about section to the official guide: https://youtu.be/8EXOeB074Zw
+Added new filter: Not or more than on wishlist
+- Shows all the materials you have that are not on a wishlist or exceeding the total required amount of all wishlists
+Added wishlist amount on hover
+swap ES/FR locales for horizons commodities
+Sorted list of trading materials (only sorted on application launch)
+Added help tooltips to wishlist tabs
+Process modules before experimental effects in shortest path calculation(could reduce number of destinations)
+Added different list bullet for experimental effects in shortest path
+
+Version 1.91
+-------------
+Added Thargoid shipwreck POI
+Added short range blaster to pulse laser
+Added button to add entire loadout to wishlist at once
+Added notification on adding loadout to wishlist, while there is nothing to add.
+- Also prevent creating empty wishlists
+Fix sorting of assets on material overview
+Correct erroneous barter buy/sell values
+Keep order of Asset Types on bartender tab
+
+Version 1.90
+-------------
+Added new Bartender tab to simulate trading (Work in progress, suggestions appreciated)
+Use name of loadout when selecting "Create new" add to wishlist option
+Removed some text from the about section
+Really fix engineer unlock requirements for Nemo this time
+Handle blank name from EDSY
+
+Version 1.89
+-------------
+Add EDSY Button to Horizons Wishlist to open EDSY website
+- To import a wishlist from EDSY go to: OPS > EXPORT > EDOMH on the outfitting screen
+Use name from EDSY as wishlist name
+Fix engineer unlock requirements for Nemo and Dekker
+
+Version 1.88
+-------------
+ED Shipyard integration - import wishlist in the app through the click of a button on edsy.org (pending implementation)
+Added material statistics best average collected per visit
+- Requires minimum of 10 visits for settlements to be considered. (5 for Colonia)
+
+Version 1.87
+-------------
+Loadout cloning - Clones an entire loadout you defined
+Current loadout - Show a read-only version of your current loadout selected in-game, which can be cloned
+Loadout add to wishlist - Option to add a loadout item to a new wishlist
+Fix loadout create/rename button texts
+
+Version 1.86
+-------------
+Alternate journal monitoring method for network shares(Optional Setting)
+Added Unclassified Relic Commodity
+Fix notification on CAPI connect
+
+Version 1.85
+-------------
+New read-only aggregated wishlists for Horizons and Odyssey
+
+Version 1.84
+-------------
+Leave yellow wishlist materials on uncompleted list (because you need to collect them from the fleetcarrier)
+Bugfix for Meta Hull Reinforcement blueprint on wishlist causing application error
+
+Version 1.83
+-------------
+Split material tracking for Bubble/Colonia. Show material statistics for whichever is closest.
+The update schedule for this is weekly, so if you are in Colonia and want the latest report with Colonia statistics:
+- Remove material-report.json from %localappdata%\odyssey-materials-helper
+- Restart the application
+Or wait a week for the next refresh.
+
+Version 1.82
+-------------
+Added overview for Horizons Commodities with search abilities
+Integrated with fleetcarrier stock and orders
+Compacted recipes for Horizons materials in the tooltip
+Added yellow highlight to Horizons wishlist materials to indicate remaining required materials are available on fleetcarrier
+Added a warning for when the API authentication fails and requires a relogin
+Muted Warning if irrelevant or wishlist material is mission related
+Fix horizons engineer links to blueprints
+Fix flickering material images for certain languages
+Renamed Odyssey Overview to Materials
+
+Version 1.81
+-------------
+Add grayscale conversion for AR Overlay material OCR, to improve detection on default game HUD colors
+
+Version 1.80
+-------------
+AR Overlay for data download terminals. Windows 64-bit only feature.
+- English comes pre-installed, other languages will be installed upon selection
+Point to emote to odyssey material gives information
+Update to material totals to properly reflect backpack/shiplocker/fleetcarrier
+Fixed AX Remote Flak Munitions Synthesis ingredient and modifier
+Many Russian and some German translations
+Fix French quote issues in translations
+Add blueprints for Pre-Engineered Guardian Plasma Chargers
+Fix for wishlist material highlighting
+Fix for non-existent journal folder breaking journal folder select
+Added application log file. Cleared on each launch.
+Fix for notifications not playing
+Fix showing backpack content on application load, while backpack is actually empty(because you are sitting in your ship)
+
+Version 1.79
+-------------
+Fix statusbar hidden label taking up space
+Fix fleetcarrier amounts remaining 0
+
+Version 1.78
+-------------
+Show engineer unlock blueprints green when requirements are met. (B3, C5, D1.2, D2)
+Improve shutdown closing active threads before exit
+Add upgrade suit and upgrade weapon event handling
+Settings - Try to initialize journalfolder select to existing selection
+Added melee damage values to loadout
+Added filters for fleetcarrier and backpack to material overview
+Added yellow highlight for wishlistmaterials that have the required amount in total, but not in the shiplocker
+Added setting to connect the app with Frontier API
+Addde logic to get fleetcarrier information from API to show storage values
+Show individual storage quantities on hover in material overview
+Added fleetcarrier buy/sell orders to tooltip
+Retrieve fleetcarrier data every 5 minutes
+Added statusbar indicator for last api update
+
+Version 1.77
+-------------
+Add/replace stats for handling speed and jump assist in loadout editor - BIG CHANGES (thanks to toqueville)
+Correct modifiers for handling speed and jump assist
+Fix order of horizons materials
+Fix odyssey shortest path excluding T3 engineers
+Fix dropdowns in trade sometimes showing black text on a black background
+Remove beta tag from trade
+Fix notification playing before initialization finishes
+Fix loadout warning showing incorrectly
+Fix tooltips for odyssey blueprints in wishlist - actual newline instead of \n
+QOL: singleclick add to wishlist if only 1 option is present
+Hide distance for remote workshop in Horizons wishlist shortest path
+Fix localizations - add missing localizations, add missing single-quotes(')
+
+Version 1.76
+-------------
+Fix odyssey wishlist bug, causing application journal read failure
+
+Version 1.75
+-------------
+Correct Ram Tah unlock material (Classified Scan Fragment -> Classified Scan Databanks)
+Add blueprint pinning
+Add Horizons Wishlist
+Add rolls per grade configuration to settings
+Move settings tab to generic level
+Implement horizons material searchbar
+
+Version 1.74
+-------------
+Set material tracking report download to weekly
+Fix for launching app in a non-english locale
+Update settings layout
+Add more notification sounds configuration to settings
+Add notification when picking something up from the wishlist
+Add option to disable specific notifications
+
+Version 1.73
+-------------
+Handle new journal filenaming scheme for Update 11
+
+Version 1.72
+-------------
+Improve memory footprint - dynamic loading of horizons blueprints
+Fix for new installs not having the appfolder yet when creating the lockfile
+Improve material popup: delay when showing, position based on screen quadrant
+
+Version 1.71
+-------------
+Import tab removed
+Import now available through edomh:// urls
+Updated menu for wishlist and loadout tabs
+Double-click on loadout modifications to mark them as present and prevent them being added to the wishlist
+Added material totals to the wishlist tab
+
+Version 1.70
+-------------
+Added horizons engineers & blueprints
+
+Version 1.69
+-------------
+Fix exceptions caused by Horizons journals
+Added some POI's (thanks to texaspete)
+
+Version 1.68
+-------------
+Fix horizons material grades and storage limits
+Handle material trade journal messages for Horizons materials
+Add support for reading Horizons journals. (Odyssey content won't be available until your latest journal is Odyssey again)
+Added some POI's
+
+Version 1.67
+-------------
+Add Horizons materials overview(WIP) translations
+Bugfix for trade create not showing relevant materials
+
+Version 1.66
+-------------
+Super secret setting to show Work In Progress
+Added Horizons materials overview(WIP)
+
 Version 1.65
 -------------
-add material tracking opt-out
-fix memory leak issue in loadouts
-fix zenith Rate of fire
+Add material tracking opt-out
+Fix memory leak issue in loadouts
+Fix zenith Rate of fire
 
 Version 1.64
 -------------

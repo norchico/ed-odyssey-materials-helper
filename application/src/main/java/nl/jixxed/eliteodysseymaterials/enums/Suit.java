@@ -11,10 +11,9 @@ import java.util.Map;
 @Getter
 public enum Suit implements Equipment {
     MAVERICK(
-            new LevelValue(RecipeName.NONE, RecipeName.MAVERICK_SUIT_GRADE_1_2, RecipeName.MAVERICK_SUIT_GRADE_2_3, RecipeName.MAVERICK_SUIT_GRADE_3_4, RecipeName.MAVERICK_SUIT_GRADE_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.MAVERICK_SUIT_GRADE_1_2, OdysseyBlueprintName.MAVERICK_SUIT_GRADE_2_3, OdysseyBlueprintName.MAVERICK_SUIT_GRADE_3_4, OdysseyBlueprintName.MAVERICK_SUIT_GRADE_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.HEALTH, 30),
-            Map.entry(StaticStat.MASS, 100),
             Map.entry(StaticStat.PRIMARY_SLOTS, 1),
             Map.entry(StaticStat.SECONDARY_SLOTS, 1),
             Map.entry(DynamicStat.EMERGENCY_AIR, 60),
@@ -25,7 +24,8 @@ public enum Suit implements Equipment {
             Map.entry(DynamicStat.PLASMA_RESIST, new LevelValue(-10, 7, 22, 35, 45)),
             Map.entry(DynamicStat.EXPLOSIVE_RESIST, new LevelValue(0, 16, 29, 41, 50)),
             Map.entry(DynamicStat.BATTERY, 13.5),
-            Map.entry(StaticStat.ENERGYLINK_RECHARGE_TIME, 5),
+            Map.entry(DynamicStat.JUMP_ASSIST_RECHARGE, 1.5),
+            Map.entry(DynamicStat.BATTERY_RECHARGE_DURATION, 13.5),
             Map.entry(DynamicStat.ARCCUTTER_POWER_USAGE, 150.0),
             Map.entry(DynamicStat.AMMO_CAPACITY, 100),
             Map.entry(DynamicStat.GOODS_CAPACITY, 15),
@@ -33,10 +33,9 @@ public enum Suit implements Equipment {
             Map.entry(DynamicStat.DATA_CAPACITY, 10)
     ),
     DOMINATOR(
-            new LevelValue(RecipeName.NONE, RecipeName.DOMINATOR_SUIT_GRADE_1_2, RecipeName.DOMINATOR_SUIT_GRADE_2_3, RecipeName.DOMINATOR_SUIT_GRADE_3_4, RecipeName.DOMINATOR_SUIT_GRADE_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.DOMINATOR_SUIT_GRADE_1_2, OdysseyBlueprintName.DOMINATOR_SUIT_GRADE_2_3, OdysseyBlueprintName.DOMINATOR_SUIT_GRADE_3_4, OdysseyBlueprintName.DOMINATOR_SUIT_GRADE_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.HEALTH, 30),
-            Map.entry(StaticStat.MASS, 100),
             Map.entry(StaticStat.PRIMARY_SLOTS, 2),
             Map.entry(StaticStat.SECONDARY_SLOTS, 1),
             Map.entry(DynamicStat.EMERGENCY_AIR, 60),
@@ -47,17 +46,17 @@ public enum Suit implements Equipment {
             Map.entry(DynamicStat.PLASMA_RESIST, new LevelValue(0, 16, 29, 46, 50)),
             Map.entry(DynamicStat.EXPLOSIVE_RESIST, new LevelValue(0, 16, 29, 46, 50)),
             Map.entry(DynamicStat.BATTERY, 10.0),
-            Map.entry(StaticStat.ENERGYLINK_RECHARGE_TIME, 4),
+            Map.entry(DynamicStat.JUMP_ASSIST_RECHARGE, 1.0),
+            Map.entry(DynamicStat.BATTERY_RECHARGE_DURATION, 10.0),
             Map.entry(DynamicStat.AMMO_CAPACITY, 100),
             Map.entry(DynamicStat.GOODS_CAPACITY, 5),
             Map.entry(DynamicStat.ASSETS_CAPACITY, 10),
             Map.entry(DynamicStat.DATA_CAPACITY, 10)
     ),
     ARTEMIS(
-            new LevelValue(RecipeName.NONE, RecipeName.ARTEMIS_SUIT_GRADE_1_2, RecipeName.ARTEMIS_SUIT_GRADE_2_3, RecipeName.ARTEMIS_SUIT_GRADE_3_4, RecipeName.ARTEMIS_SUIT_GRADE_4_5),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.ARTEMIS_SUIT_GRADE_1_2, OdysseyBlueprintName.ARTEMIS_SUIT_GRADE_2_3, OdysseyBlueprintName.ARTEMIS_SUIT_GRADE_3_4, OdysseyBlueprintName.ARTEMIS_SUIT_GRADE_4_5),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 1, 2, 3, 4)),
             Map.entry(StaticStat.HEALTH, 30),
-            Map.entry(StaticStat.MASS, 100),
             Map.entry(StaticStat.PRIMARY_SLOTS, 1),
             Map.entry(StaticStat.SECONDARY_SLOTS, 1),
             Map.entry(DynamicStat.EMERGENCY_AIR, 60),
@@ -68,17 +67,18 @@ public enum Suit implements Equipment {
             Map.entry(DynamicStat.PLASMA_RESIST, new LevelValue(-20, 0, 14, 29, 39)),
             Map.entry(DynamicStat.EXPLOSIVE_RESIST, new LevelValue(0, 16, 29, 41, 50)),
             Map.entry(DynamicStat.BATTERY, 17.0),
-            Map.entry(StaticStat.ENERGYLINK_RECHARGE_TIME, 6),
+            Map.entry(DynamicStat.JUMP_ASSIST_RECHARGE, 3.3),
+            Map.entry(DynamicStat.BATTERY_RECHARGE_DURATION, 17.0),
+            Map.entry(DynamicStat.GENETICSAMPLER_POWER_USAGE, 450.0),
             Map.entry(DynamicStat.AMMO_CAPACITY, 100),
             Map.entry(DynamicStat.GOODS_CAPACITY, 10),
             Map.entry(DynamicStat.ASSETS_CAPACITY, 20),
             Map.entry(DynamicStat.DATA_CAPACITY, 10)
     ),
     FLIGHTSUIT(
-            new LevelValue(RecipeName.NONE, RecipeName.NONE, RecipeName.NONE, RecipeName.NONE, RecipeName.NONE),
+            new LevelValue(OdysseyBlueprintName.NONE, OdysseyBlueprintName.NONE, OdysseyBlueprintName.NONE, OdysseyBlueprintName.NONE, OdysseyBlueprintName.NONE),
             Map.entry(DynamicStat.MODIFICATION_SLOTS, new LevelValue(0, 0, 0, 0, 0)),
             Map.entry(StaticStat.HEALTH, 30),
-            Map.entry(StaticStat.MASS, 100),
             Map.entry(StaticStat.PRIMARY_SLOTS, 0),
             Map.entry(StaticStat.SECONDARY_SLOTS, 1),
             Map.entry(DynamicStat.EMERGENCY_AIR, 60),
@@ -89,7 +89,7 @@ public enum Suit implements Equipment {
             Map.entry(DynamicStat.PLASMA_RESIST, new LevelValue(-20, -20, -20, -20, -20)),
             Map.entry(DynamicStat.EXPLOSIVE_RESIST, new LevelValue(0, 0, 0, 0, 0)),
             Map.entry(DynamicStat.BATTERY, 7.0),
-            Map.entry(StaticStat.ENERGYLINK_RECHARGE_TIME, 6),
+            Map.entry(DynamicStat.JUMP_ASSIST_RECHARGE, 2.2),
             Map.entry(DynamicStat.AMMO_CAPACITY, 100),
             Map.entry(DynamicStat.GOODS_CAPACITY, 5),
             Map.entry(DynamicStat.ASSETS_CAPACITY, 10),
@@ -114,15 +114,23 @@ public enum Suit implements Equipment {
             Map.entry(DynamicStat.SPRINT_DURATION, 13),
             Map.entry(DynamicStat.NIGHT_VISION, 1.2),
             Map.entry(DynamicStat.JUMP_ASSIST_BATTERY_CONSUMPTION, 100),
-            Map.entry(DynamicStat.JUMP_ASSIST_DRAIN, 100),
-            Map.entry(DynamicStat.JUMP_ASSIST_RECHARGE, 100),
+            Map.entry(DynamicStat.JUMP_ASSIST_DURATION, 100),
             Map.entry(StaticStat.SHIELD_POWER_USAGE, 34.0),
             Map.entry(StaticStat.LIGHTS_POWER_USAGE, 0.1),
+            Map.entry(StaticStat.NIGHTVISION_POWER_USAGE, 1.2),
+            Map.entry(DynamicStat.PROFILESCANNER_POWER_USAGE, 40.0),
+            Map.entry(StaticStat.PROFILESCANNER_SCAN_DURATION, 3),
+            Map.entry(StaticStat.PROFILESCANNER_CLONE_DURATION, 4),
+            Map.entry(StaticStat.ENERGYLINK_RECHARGE_RATE, 2.7),
             Map.entry(DynamicStat.ENERGYLINK_OVERLOAD_POWER_USAGE, 3.0),
+            Map.entry(StaticStat.ENERGYLINK_DISCHARGE_RATE, 600),
+            Map.entry(StaticStat.ENERGYLINK_DISCHARGE_DURATION, 1.7),
             Map.entry(DynamicStat.LOS_ANALYSIS_RANGE, 50),
             Map.entry(DynamicStat.LOS_ANALYSIS_TIME, 1),
             Map.entry(DynamicStat.FOOTSTEPS_AUDIBLE_RANGE, 8),
-            Map.entry(DynamicStat.MELEE_DAMAGE, 100)
+            Map.entry(DynamicStat.MELEE_SHIELD_DAMAGE, 2),
+            Map.entry(DynamicStat.MELEE_HEALTH_DAMAGE, 2)
+
     );
     private final Map<Stat, Object> stats;
 
@@ -146,4 +154,25 @@ public enum Suit implements Equipment {
         return "loadout.equipment.name." + this.name().toLowerCase();
     }
 
+    public static Suit forFdevName(final String name) {
+        return switch (name) {
+            case "utilitysuit_class1" -> MAVERICK;
+            case "utilitysuit_class2" -> MAVERICK;
+            case "utilitysuit_class3" -> MAVERICK;
+            case "utilitysuit_class4" -> MAVERICK;
+            case "utilitysuit_class5" -> MAVERICK;
+            case "explorationsuit_class1" -> ARTEMIS;
+            case "explorationsuit_class2" -> ARTEMIS;
+            case "explorationsuit_class3" -> ARTEMIS;
+            case "explorationsuit_class4" -> ARTEMIS;
+            case "explorationsuit_class5" -> ARTEMIS;
+            case "tacticalsuit_class1" -> DOMINATOR;
+            case "tacticalsuit_class2" -> DOMINATOR;
+            case "tacticalsuit_class3" -> DOMINATOR;
+            case "tacticalsuit_class4" -> DOMINATOR;
+            case "tacticalsuit_class5" -> DOMINATOR;
+            case "flightsuit" -> FLIGHTSUIT;
+            default -> throw new IllegalArgumentException("Unknown Suit: " + name);
+        };
+    }
 }

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 @RequiredArgsConstructor
 @Getter
@@ -33,15 +32,17 @@ public enum Encoded implements HorizonsMaterial {
     CONSUMERFIRMWARE(Rarity.COMMON, HorizonsMaterialType.ENCODED_FIRMWARE),
     EMBEDDEDFIRMWARE(Rarity.VERY_RARE, HorizonsMaterialType.ENCODED_FIRMWARE),
     SYMMETRICKEYS(Rarity.STANDARD, HorizonsMaterialType.ENCRYPTION_FILES),
-    ANCIENTBIOLOGICALDATA(Rarity.STANDARD, HorizonsMaterialType.GUARDIAN),
-    ANCIENTCULTURALDATA(Rarity.COMMON, HorizonsMaterialType.GUARDIAN),
-    ANCIENTLANGUAGEDATA(Rarity.RARE, HorizonsMaterialType.GUARDIAN),
-    ANCIENTTECHNOLOGICALDATA(Rarity.VERY_RARE, HorizonsMaterialType.GUARDIAN),
-    ANCIENTHISTORICALDATA(Rarity.VERY_COMMON, HorizonsMaterialType.GUARDIAN),
+    ANCIENTBIOLOGICALDATA(Rarity.STANDARD, HorizonsMaterialType.GUARDIAN),//Pattern Alpha Obelisk Data
+    ANCIENTCULTURALDATA(Rarity.COMMON, HorizonsMaterialType.GUARDIAN),//Pattern Beta Obelisk Data
+    ANCIENTLANGUAGEDATA(Rarity.RARE, HorizonsMaterialType.GUARDIAN),//Pattern Delta Obelisk Data
+    ANCIENTTECHNOLOGICALDATA(Rarity.RARE, HorizonsMaterialType.GUARDIAN),//Pattern Epsilon Obelisk Data
+    ANCIENTHISTORICALDATA(Rarity.VERY_COMMON, HorizonsMaterialType.GUARDIAN),//Pattern Gamma Obelisk Data
     SHIELDFREQUENCYDATA(Rarity.VERY_RARE, HorizonsMaterialType.SHIELD_DATA),
     SECURITYFIRMWARE(Rarity.RARE, HorizonsMaterialType.ENCODED_FIRMWARE),
+    TG_INTERDICTIONDATA(Rarity.STANDARD, HorizonsMaterialType.THARGOID, GameVersion.LIVE),
+    TG_SHUTDOWNDATA(Rarity.STANDARD, HorizonsMaterialType.THARGOID, GameVersion.LIVE),
     TG_SHIPFLIGHTDATA(Rarity.STANDARD, HorizonsMaterialType.THARGOID),
-    TG_SHIPSYSTEMSDATA(Rarity.STANDARD, HorizonsMaterialType.THARGOID),
+    TG_SHIPSYSTEMSDATA(Rarity.RARE, HorizonsMaterialType.THARGOID),
     LEGACYFIRMWARE(Rarity.VERY_COMMON, HorizonsMaterialType.ENCODED_FIRMWARE),
     WAKESOLUTIONS(Rarity.STANDARD, HorizonsMaterialType.WAKE_SCANS),
     ENCRYPTIONCODES(Rarity.COMMON, HorizonsMaterialType.ENCRYPTION_FILES),
@@ -58,6 +59,13 @@ public enum Encoded implements HorizonsMaterial {
 
     private final Rarity rarity;
     private final HorizonsMaterialType materialType;
+    private final GameVersion gameVersion;
+
+    Encoded(final Rarity rarity, final HorizonsMaterialType materialType) {
+        this.rarity = rarity;
+        this.materialType = materialType;
+        this.gameVersion = GameVersion.LEGACY;
+    }
 
     @Override
     public String getLocalizationKey() {
@@ -77,10 +85,24 @@ public enum Encoded implements HorizonsMaterial {
         }
     }
 
-    public static Encoded[] materialsForTypeSorted(final HorizonsMaterialType materialType) {
+    public static Encoded[] materialsForType(final HorizonsMaterialType materialType) {
         return Arrays.stream(Encoded.values())
                 .filter(encoded -> encoded.getMaterialType().equals(materialType))
-                .sorted(Comparator.comparing(Encoded::getRarity))
                 .toList().toArray(Encoded[]::new);
+    }
+
+    @Override
+    public int getMaxAmount() {
+        if (this == GUARDIAN_VESSELBLUEPRINT) {
+            return 100;// might actually be bugged like raw materials, but too much to verify
+        } else if (HorizonsMaterialType.GUARDIAN.equals(this.materialType)) {
+            return 150;
+        }
+        return this.getRarity().getMaxAmount();
+    }
+
+    @Override
+    public HorizonsStorageType getStorageType() {
+        return HorizonsStorageType.ENCODED;
     }
 }

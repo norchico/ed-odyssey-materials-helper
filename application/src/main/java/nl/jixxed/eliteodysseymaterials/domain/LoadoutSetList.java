@@ -18,7 +18,10 @@ public class LoadoutSetList {
 
     @JsonIgnore
     public Set<LoadoutSet> getAllLoadoutSets() {
-        return Collections.unmodifiableSet(this.loadoutSets);
+
+        final Set<LoadoutSet> loadoutSets1 = new HashSet<>(this.loadoutSets);
+        loadoutSets1.add(LoadoutSet.CURRENT);
+        return Collections.unmodifiableSet(loadoutSets1);
     }
 
     @JsonIgnore
@@ -26,10 +29,10 @@ public class LoadoutSetList {
         if (this.selectedLoadoutSetUUID == null || this.selectedLoadoutSetUUID.isEmpty()) {
             return selectFirstloadoutSet();
         } else {
-            return this.loadoutSets.stream()
+            return this.getAllLoadoutSets().stream()
                     .filter(loadoutSet -> loadoutSet.getUuid().equals(this.selectedLoadoutSetUUID))
                     .findFirst()
-                    .orElseGet(() -> selectFirstloadoutSet());
+                    .orElseGet(this::selectFirstloadoutSet);
         }
     }
 
@@ -63,9 +66,11 @@ public class LoadoutSetList {
     }
 
     @JsonIgnore
-    void updateLoadoutSet(final LoadoutSet loadoutSetToAdd) {
-        this.loadoutSets.removeIf(loadoutSet -> loadoutSet.getUuid().equals(loadoutSetToAdd.getUuid()));
-        this.loadoutSets.add(loadoutSetToAdd);
+    public void updateLoadoutSet(final LoadoutSet loadoutSetToAdd) {
+        if (!loadoutSetToAdd.equals(LoadoutSet.CURRENT)) {
+            this.loadoutSets.removeIf(loadoutSet -> loadoutSet.getUuid().equals(loadoutSetToAdd.getUuid()));
+            this.loadoutSets.add(loadoutSetToAdd);
+        }
     }
 
     @JsonIgnore
@@ -80,7 +85,9 @@ public class LoadoutSetList {
     public void renameLoadoutSet(final String uuid, final String name) {
         if (name != null && !name.isEmpty()) {
             final LoadoutSet loadoutSet = getLoadoutSet(uuid);
-            loadoutSet.setName((name.length() > 50) ? name.substring(0, 50) : name);
+            if (loadoutSet != null) {
+                loadoutSet.setName((name.length() > 50) ? name.substring(0, 50) : name);
+            }
         }
     }
 

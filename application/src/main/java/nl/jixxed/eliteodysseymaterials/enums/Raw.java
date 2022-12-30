@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 @RequiredArgsConstructor
 @Getter
@@ -41,7 +40,13 @@ public enum Raw implements HorizonsMaterial {
     UNKNOWN(Rarity.UNKNOWN, HorizonsMaterialType.UNKNOWN);
     private final Rarity rarity;
     private final HorizonsMaterialType materialType;
+    private final GameVersion gameVersion;
 
+    Raw(final Rarity rarity, final HorizonsMaterialType materialType) {
+        this.rarity = rarity;
+        this.materialType = materialType;
+        this.gameVersion = GameVersion.LEGACY;
+    }
     @Override
     public String getLocalizationKey() {
         return "material.raw." + this.name().toLowerCase();
@@ -60,10 +65,14 @@ public enum Raw implements HorizonsMaterial {
         }
     }
 
-    public static Raw[] materialsForTypeSorted(final HorizonsMaterialType materialType) {
+    public static Raw[] materialsForType(final HorizonsMaterialType materialType) {
         return Arrays.stream(Raw.values())
                 .filter(raw -> raw.getMaterialType().equals(materialType))
-                .sorted(Comparator.comparing(Raw::getRarity))
                 .toList().toArray(Raw[]::new);
+    }
+
+    @Override
+    public HorizonsStorageType getStorageType() {
+        return HorizonsStorageType.RAW;
     }
 }

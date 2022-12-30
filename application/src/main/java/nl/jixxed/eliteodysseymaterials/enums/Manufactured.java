@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 @RequiredArgsConstructor
 @Getter
@@ -12,6 +11,8 @@ public enum Manufactured implements HorizonsMaterial {
     BASICCONDUCTORS(Rarity.VERY_COMMON, HorizonsMaterialType.CONDUCTIVE),
     TG_BIOMECHANICALCONDUITS(Rarity.STANDARD, HorizonsMaterialType.THARGOID),//tg_biomechanicalconduits
     BIOTECHCONDUCTORS(Rarity.VERY_RARE, HorizonsMaterialType.CONDUCTIVE),
+    TG_CAUSTICCRYSTAL(Rarity.RARE, HorizonsMaterialType.THARGOID,GameVersion.LIVE),//
+    TG_CAUSTICSHARD(Rarity.COMMON, HorizonsMaterialType.THARGOID,GameVersion.LIVE),//
     CHEMICALDISTILLERY(Rarity.STANDARD, HorizonsMaterialType.CHEMICAL),
     CHEMICALMANIPULATORS(Rarity.RARE, HorizonsMaterialType.CHEMICAL),
     CHEMICALPROCESSORS(Rarity.COMMON, HorizonsMaterialType.CHEMICAL),
@@ -22,6 +23,7 @@ public enum Manufactured implements HorizonsMaterial {
     CONDUCTIVECOMPONENTS(Rarity.COMMON, HorizonsMaterialType.CONDUCTIVE),
     CONDUCTIVEPOLYMERS(Rarity.RARE, HorizonsMaterialType.CONDUCTIVE),
     CONFIGURABLECOMPONENTS(Rarity.RARE, HorizonsMaterialType.MECHANICAL_COMPONENTS),
+    TG_CAUSTICGENERATORPARTS(Rarity.STANDARD, HorizonsMaterialType.THARGOID,GameVersion.LIVE),//
     FEDCORECOMPOSITES(Rarity.VERY_RARE, HorizonsMaterialType.COMPOSITE),//fedcorecomposites
     CRYSTALSHARDS(Rarity.VERY_COMMON, HorizonsMaterialType.CRYSTALS),
     ELECTROCHEMICALARRAYS(Rarity.STANDARD, HorizonsMaterialType.CAPACITORS),
@@ -34,8 +36,8 @@ public enum Manufactured implements HorizonsMaterial {
     GUARDIAN_POWERCELL(Rarity.VERY_COMMON, HorizonsMaterialType.GUARDIAN),//guardian_powercell
     GUARDIAN_POWERCONDUIT(Rarity.COMMON, HorizonsMaterialType.GUARDIAN),//guardian_powerconduit
     GUARDIAN_SENTINEL_WEAPONPARTS(Rarity.STANDARD, HorizonsMaterialType.GUARDIAN),//guardian_sentinel_weaponparts
-    GUARDIAN_SENTINEL_WRECKAGECOMPONENTS(Rarity.COMMON, HorizonsMaterialType.GUARDIAN),//guardian_techcomponent
-    GUARDIAN_TECHCOMPONENT(Rarity.VERY_COMMON, HorizonsMaterialType.GUARDIAN),//guardian_sentinel_wreckagecomponents
+    GUARDIAN_SENTINEL_WRECKAGECOMPONENTS(Rarity.VERY_COMMON, HorizonsMaterialType.GUARDIAN),//guardian_techcomponent
+    GUARDIAN_TECHCOMPONENT(Rarity.STANDARD, HorizonsMaterialType.GUARDIAN),//guardian_sentinel_wreckagecomponents
     HEATCONDUCTIONWIRING(Rarity.VERY_COMMON, HorizonsMaterialType.HEAT),
     HEATDISPERSIONPLATE(Rarity.COMMON, HorizonsMaterialType.HEAT),
     HEATEXCHANGERS(Rarity.STANDARD, HorizonsMaterialType.HEAT),
@@ -55,7 +57,7 @@ public enum Manufactured implements HorizonsMaterial {
     POLYMERCAPACITORS(Rarity.RARE, HorizonsMaterialType.CAPACITORS),
     PRECIPITATEDALLOYS(Rarity.STANDARD, HorizonsMaterialType.THERMIC),
     FEDPROPRIETARYCOMPOSITES(Rarity.RARE, HorizonsMaterialType.COMPOSITE),//fedproprietarycomposites
-    TG_PROPULSIONELEMENT(Rarity.STANDARD, HorizonsMaterialType.THARGOID),//tg_propulsionelement
+    TG_PROPULSIONELEMENT(Rarity.VERY_RARE, HorizonsMaterialType.THARGOID),//tg_propulsionelement
     PROTOHEATRADIATORS(Rarity.VERY_RARE, HorizonsMaterialType.HEAT),
     PROTOLIGHTALLOYS(Rarity.RARE, HorizonsMaterialType.ALLOYS),
     PROTORADIOLICALLOYS(Rarity.VERY_RARE, HorizonsMaterialType.ALLOYS),
@@ -70,13 +72,19 @@ public enum Manufactured implements HorizonsMaterial {
     UNKNOWNORGANICCIRCUITRY(Rarity.VERY_RARE, HorizonsMaterialType.THARGOID),
     UNKNOWNTECHNOLOGYCOMPONENTS(Rarity.RARE, HorizonsMaterialType.THARGOID),
     THERMICALLOYS(Rarity.RARE, HorizonsMaterialType.THERMIC),
-    TG_WEAPONPARTS(Rarity.STANDARD, HorizonsMaterialType.THARGOID),//tg_weaponparts
+    TG_WEAPONPARTS(Rarity.RARE, HorizonsMaterialType.THARGOID),//tg_weaponparts
     WORNSHIELDEMITTERS(Rarity.VERY_COMMON, HorizonsMaterialType.SHIELDING),
     TG_WRECKAGECOMPONENTS(Rarity.STANDARD, HorizonsMaterialType.THARGOID),//tg_wreckagecomponents
     UNKNOWN(Rarity.UNKNOWN, HorizonsMaterialType.UNKNOWN);
     private final Rarity rarity;
     private final HorizonsMaterialType materialType;
+    private final GameVersion gameVersion;
 
+    Manufactured(final Rarity rarity, final HorizonsMaterialType materialType) {
+        this.rarity = rarity;
+        this.materialType = materialType;
+        this.gameVersion = GameVersion.LEGACY;
+    }
     @Override
     public String getLocalizationKey() {
         return "material.manufactured." + this.name().toLowerCase();
@@ -95,10 +103,23 @@ public enum Manufactured implements HorizonsMaterial {
         }
     }
 
-    public static Manufactured[] materialsForTypeSorted(final HorizonsMaterialType materialType) {
+    public static Manufactured[] materialsForType(final HorizonsMaterialType materialType) {
         return Arrays.stream(Manufactured.values())
                 .filter(manufactured -> manufactured.getMaterialType().equals(materialType))
-                .sorted(Comparator.comparing(Manufactured::getRarity))
                 .toList().toArray(Manufactured[]::new);
+    }
+
+    @Override
+    public HorizonsStorageType getStorageType() {
+        return HorizonsStorageType.MANUFACTURED;
+    }
+
+
+    @Override
+    public int getMaxAmount() {
+        if (this == TG_CAUSTICCRYSTAL || this == TG_CAUSTICSHARD) {
+            return 200;
+        }
+        return this.getRarity().getMaxAmount();
     }
 }
